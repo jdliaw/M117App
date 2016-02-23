@@ -3,10 +3,12 @@ package com.example.brandonliu.menuorderingsystem;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Spinner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,7 +79,6 @@ public class DisplayMenuActivity extends AppCompatActivity {
     }
 
     MenuItem[] decodeMenu(String menu){
-        String data = "";
         try {
             JSONObject jsonRootObject = new JSONObject(menu);
 
@@ -96,10 +97,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
                 double price = jsonObject.getDouble("price");
 
                 itemArray[i] = new MenuItem(category, name, price);
-
-                data += "Node"+i+" : \n Category= "+ category +" \n Name= "+ name +" \n Price= "+ Double.toString(price) +" \n ";
             }
-            Log.e("debug", data);
             return itemArray;
         } catch (JSONException e) {e.printStackTrace();}
         return null;
@@ -112,6 +110,12 @@ public class DisplayMenuActivity extends AppCompatActivity {
         TextView tv1 = new TextView(this);
         tv1.setText(lastCat);
         ll.addView(tv1);
+
+        // for displaying quantity spinner and add to cart button later onclick
+        final TextView qty = (TextView)findViewById(R.id.quantity_label);
+        final Spinner qty_spinner = (Spinner)findViewById(R.id.quantity_spinner);
+        final Button add_to_cart = (Button)findViewById(R.id.add_to_cart);
+
         // display stores by shortest distance
         for (int i = 0; i < itemArray.length; i++)
         {
@@ -126,6 +130,27 @@ public class DisplayMenuActivity extends AppCompatActivity {
             Button b = new Button(this);
             b.setText(itemArray[i].getName() + "      Price: $" + Double.toString(itemArray[i].getPrice()));
             ll.addView(b);
+
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // make quantity label appear
+                    if(qty.getVisibility() == View.GONE)
+                        qty.setVisibility(View.VISIBLE);
+                    else
+                        qty.setVisibility(View.GONE);
+                    // make quantity spinner appear
+                    if(qty_spinner.getVisibility() == View.GONE)
+                        qty_spinner.setVisibility(View.VISIBLE);
+                    else
+                        qty_spinner.setVisibility(View.GONE);
+                    // make add to cart button appear
+                    if(add_to_cart.getVisibility() == View.GONE)
+                        add_to_cart.setVisibility(View.VISIBLE);
+                    else
+                        add_to_cart.setVisibility(View.GONE);
+                }
+            });
         }
     }
 }

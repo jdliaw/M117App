@@ -10,11 +10,6 @@ public class Store implements Comparable<Store> {
         m_dist = dist;
     }
     public int compareTo(Store o) {
-//        if (this.m_dist > o.m_dist)
-//            return 1;
-//        if (this.m_dist < o.m_dist)
-//            return -1;
-//        return 0;
         return Double.compare(this.getDist(), o.getDist());
     }
     public int getID()
