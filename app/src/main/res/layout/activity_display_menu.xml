@@ -10,35 +10,15 @@
     tools:context="com.example.brandonliu.menuorderingsystem.DisplayMenuActivity">
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:background="@drawable/button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:text="New Button"
         android:id="@+id/button"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="66dp" />
 
-
-    <Button android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="&lt;" />
-
-    <TextView android:id="@+id/textView1"
-        android:layout_width="50dp"
-        android:layout_height="fill_parent"
-        android:layout_alignBottom="@+id/button1"
-        android:layout_toRightOf="@+id/button1"
-        android:gravity="center"
-        android:text="45" />
-    <Button android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textView1"
-        android:text="&gt;" />
 
     <TextView
         android:id="@+id/quantity_label"
@@ -86,6 +66,7 @@
 
     <Button
         android:id="@+id/add_to_cart"
+        android:background="@drawable/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

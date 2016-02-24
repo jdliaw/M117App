@@ -141,6 +141,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
                 lastCat = curCat;
             }
             Button b = new Button(this);
+            b.setBackgroundResource(R.drawable.button);
             b.setText(itemArray[i].getName() + "      Price: $" + Double.toString(itemArray[i].getPrice()));
             ll.addView(b);
 
@@ -159,7 +160,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
                     intent.putParcelableArrayListExtra(tag, parcelCart);
 
                     startActivity(intent);
-
+                    /*
                     // make quantity label appear
                     if(qty.getVisibility() == View.GONE)
                         qty.setVisibility(View.VISIBLE);
@@ -175,6 +176,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
                         add_to_cart.setVisibility(View.VISIBLE);
                     else
                         add_to_cart.setVisibility(View.GONE);
+                        */
 
                 }
             });

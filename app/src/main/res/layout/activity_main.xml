@@ -14,12 +14,6 @@
         android:layout_height="wrap_content"
         android:text="Hello World!" />
     
-    <Button
-        android:background="@drawable/red_button"
-        android:id="@+id/button1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Styled Button"
-        style="@style/button_text" />
+
 
 </RelativeLayout>
