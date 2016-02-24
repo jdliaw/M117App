@@ -1,8 +1,10 @@
 package com.example.brandonliu.menuorderingsystem;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -13,13 +15,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 
 public class DisplayMenuActivity extends AppCompatActivity {
+
+
+    ArrayList<String> cart = new ArrayList();
+    ArrayList<MenuItem> parcelCart = new ArrayList();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_menu);
+
+        cart.add("item1");
+        cart.add("item2");
 
         ScrollView sv = new ScrollView(this);
         LinearLayout ll = new LinearLayout(this);
@@ -31,6 +42,9 @@ public class DisplayMenuActivity extends AppCompatActivity {
         Arrays.sort(menu);
         displayMenu(menu, ll);
 
+        parcelCart.add(new MenuItem("breakfast", "20McNugs", 5));
+        parcelCart.get(0).setQuantity(20);
+        Log.d("parcelTest:", parcelCart.get(0).getName());
         this.setContentView(sv);
     }
 
@@ -126,6 +140,23 @@ public class DisplayMenuActivity extends AppCompatActivity {
             Button b = new Button(this);
             b.setText(itemArray[i].getName() + "      Price: $" + Double.toString(itemArray[i].getPrice()));
             ll.addView(b);
+
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String tag = "paramName";
+                    Intent intent = new Intent(DisplayMenuActivity.this, ShoppingCartActivity.class);
+                    //String [] sendMe  = new String[] {"test1", "test2"};
+                    //String sendMe = "test";
+
+                    //intent.putExtra(tag, sendMe);
+                    //intent.putStringArrayListExtra(tag, cart);
+
+                    intent.putParcelableArrayListExtra(tag, parcelCart);
+
+                    startActivity(intent);
+                }
+            });
         }
     }
 }

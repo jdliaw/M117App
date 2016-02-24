@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    Button b;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.VERTICAL);
         sv.addView(ll);
-
+        this.setContentView(sv);
 
 
 
@@ -46,14 +46,15 @@ public class MainActivity extends AppCompatActivity {
         */
         //button
 
-        Button b = new Button(this);
-//        b = (Button)findViewById(R.id.);
+        b = new Button(this);
+        //Button b = (Button)findViewById(R.id.button);
         String latStr = Integer.toString(loc.getLatitude());
         String lonStr = Integer.toString(loc.getLongitude());
         b.setText("Find a store near your location: (" + latStr + ", " + lonStr + ")");
         ll.addView(b);
 
-        this.setContentView(sv);
+
+
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 
 
     //returns latitude and longitude as a JSON string.
