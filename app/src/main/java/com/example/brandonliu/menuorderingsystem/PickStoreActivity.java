@@ -32,21 +32,15 @@ public class PickStoreActivity extends AppCompatActivity {
 
         String jsonStores = createStoreArray();
         Store[] stores = decodeStores(jsonStores);
-        // Store.compareTo(Store s) returns 1  if > s, -1 if > s, 0 if == s.
-        // lol then just do Array.sort(array);
         Arrays.sort(stores);
+
         for (int i = 0; i < stores.length; i++)
         {
             double dist = stores[i].getDist();
-            Log.e("stores", Double.toString(dist));
         }
-
         displayStores(stores, ll);
 
-
         this.setContentView(sv);
-
-
     }
 
     String createStoreArray() {
@@ -87,13 +81,11 @@ public class PickStoreActivity extends AppCompatActivity {
     }
 
     Store[] decodeStores(String stores){
-        String data = "";
         try {
             JSONObject jsonRootObject = new JSONObject(stores);
 
             //Get the instance of JSONArray that contains JSONObjects
             JSONArray jsonArray = jsonRootObject.getJSONArray("stores");
-
             Store[] storeArray = new Store[jsonArray.length()];
 
             //Iterate the jsonArray and print the info of JSONObjects
@@ -106,10 +98,7 @@ public class PickStoreActivity extends AppCompatActivity {
                 double distance = jsonObject.getDouble("distance");
 
                 storeArray[i] = new Store(storeId, storeName, distance);
-
-                data += "Node" + i + " : \n storeId= " + Integer.toString(storeId) + " \n Name= " + storeName + " \n Distance= " + Double.toString(distance) + " \n ";
             }
-            Log.e("debug", data);
             return storeArray;
         } catch (JSONException e) {e.printStackTrace();}
         return null;

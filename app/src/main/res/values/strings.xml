@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">MenuOrderingSystem</string>
     <string name="title_activity_pick_menu">PickMenuActivity</string>
+    <string name="add_to_cart">Add To Cart</string>
+    <string name="quantity_label">Quantity: </string>
+    <string name="comments_label">Comments/Requests</string>
+    <string-array name="quantity_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
 </resources>
