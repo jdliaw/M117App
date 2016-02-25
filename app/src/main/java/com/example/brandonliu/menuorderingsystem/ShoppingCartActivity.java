@@ -55,6 +55,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
         listView.setAdapter(itemsAdapter);
     }
+
     public static double getSubtotal(ArrayList<MenuItem> allItems) {
         int len = allItems.size();
         double tot = 0;
