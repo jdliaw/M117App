@@ -183,3 +183,13 @@ public class DisplayMenuActivity extends AppCompatActivity {
         }
     }
 }
+
+//display menu:
+/*
+fragment with a spinner for quantity and add to cart button (and cancel button or something)
+this adds to a ArrayList<MenuItem> shoppingCart
+we'll send the shoppingCart to shoppingcartactivity
+
+there, we can parse for strings and display the menu
+
+ */

@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         Order[] orders = new Order[2];
         orders[0] = new Order(5, 10, "no cheese");
         orders[1] = new Order(2, 1, "");
-        Log.d("117", sendOrder(orders));
+        //Log.d("117", sendOrder(orders));
 
         ScrollView sv = new ScrollView(this);
         LinearLayout ll = new LinearLayout(this);
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return null;
     }
-
+/*
     //returns the order as a JSON string.
     public static String sendOrder(Order[] orders) {
         try {
@@ -113,17 +113,17 @@ public class MainActivity extends AppCompatActivity {
                 orderDetails = new JSONObject();    //reset the orderDetail for a new item.
             }
             obj.put("order", array);
-/*
+*//*
             list.put(listobj.put("itemId", new Integer(1)));
             list.put(listobj.put("quantity", new Integer(5)));
             list.put(listobj.put("comment", new String("no cheese")));
-*/
+*//*
             return obj.toString();
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 
 
 }

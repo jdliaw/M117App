@@ -7,42 +7,65 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ScrollView;
 import android.widget.LinearLayout;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.ArrayList;
+
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class PickStoreActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_store);
 
-        ScrollView sv = new ScrollView(this);
-        LinearLayout ll = new LinearLayout(this);
-        ll.setOrientation(LinearLayout.VERTICAL);
-        sv.addView(ll);
-
+        //hard coded for now, it's the stores that we'll receive.
         String jsonStores = createStoreArray();
+        //convert json object/array into an array of stores
         Store[] stores = decodeStores(jsonStores);
+        //sort stores distance
         Arrays.sort(stores);
 
-        for (int i = 0; i < stores.length; i++)
-        {
-            double dist = stores[i].getDist();
-        }
-        displayStores(stores, ll);
 
-        this.setContentView(sv);
+        //create an arraylist of strings to be displayed
+        ArrayList<String> storesString = getStores(stores);
+
+        //items adapter uses basic list layout and our arraylist of strings to create a list view
+        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, storesString);
+
+        final ListView listView = (ListView)findViewById(R.id.storelist);
+        //sets adapter and creates the listview
+        listView.setAdapter(itemsAdapter);
+
+        //sets onclick listener to start new activity. onItemClick = when we click a particular item
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> myAdapter, View myView, int myItemInt, long mylng) {
+                String selectedFromList = (String) (listView.getItemAtPosition(myItemInt));
+                Log.d("m117test", selectedFromList);    //test if we get the string we click
+
+                //move onto displayMenuActivity
+                startActivity(new Intent(PickStoreActivity.this, DisplayMenuActivity.class));
+            }
+        });
+
+        //displayStores(stores, storeList);
+//        setContentView(R.layout.activity_pick_store);
     }
 
+    //returns JSON string of stores
     String createStoreArray() {
         // to test decodeStores
         JSONObject store1 = new JSONObject();
@@ -104,14 +127,27 @@ public class PickStoreActivity extends AppCompatActivity {
         return null;
     }
 
-    void displayStores(Store[] storeArray, LinearLayout ll)
+    //returns an array list of stores used for arrayadapter
+    public static ArrayList<String> getStores(Store[] storeArray) {
+        int len = storeArray.length;
+        ArrayList<String> storeArrayList = new ArrayList<String>();
+        //iterates through the length on storeArray and adds to arrayList.
+        for(int i = 0; i < len; i++) {
+            storeArrayList.add(storeArray[i].getName() + "\n Distance: " + Double.toString(storeArray[i].getDist()) + "mi");
+        }
+        return storeArrayList;
+    }
+
+
+
+    void displayStores(Store[] storeArray, ListView storeList)
     {
+
         // display stores by shortest distance
         for (int i = 0; i < storeArray.length; i++)
         {
             Button b = new Button(this);
             b.setText(storeArray[i].getName() + "\n Distance: " + Double.toString(storeArray[i].getDist()) + "mi");
-            ll.addView(b);
 
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
