@@ -6,9 +6,15 @@ import android.util.Log;
 import android.content.Intent;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.text.DecimalFormat;
+
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 public class ShoppingCartActivity extends AppCompatActivity {
 
@@ -28,8 +34,6 @@ public class ShoppingCartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
 
-
-
         //get Array List of menu items
         ArrayList<MenuItem> parcelCart = getIntent().getParcelableArrayListExtra("paramName");
         Log.d("shoppingCartSize", String.valueOf(parcelCart.size()));
@@ -43,10 +47,12 @@ public class ShoppingCartActivity extends AppCompatActivity {
         total = tax + getSubtotal(parcelCart);
         shoppingCart.add("Total: $" + dec.format(total));
 
+        //put into listview
         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shoppingCart);
-
         final ListView listView = (ListView)findViewById(R.id.shopping_cart);
-        //sets adapter and creates the listview
+        View header = (View)getLayoutInflater().inflate(R.layout.header, listView, false);
+        listView.addHeaderView(header);
+
         listView.setAdapter(itemsAdapter);
     }
     public static double getSubtotal(ArrayList<MenuItem> allItems) {
@@ -72,6 +78,32 @@ public class ShoppingCartActivity extends AppCompatActivity {
             tempCart.add(temp);
         }
         return tempCart;
+    }
+
+    //returns the order as a JSON string.
+    public static String sendOrder(ArrayList<MenuItem> orders) {
+        try {
+            JSONObject obj = new JSONObject();
+            obj.put("name", new String("John"));            //name on the order
+            JSONArray array = new JSONArray();              //array of items ordered
+            JSONObject orderDetails = new JSONObject();     //for each item ordered
+
+            int orderSize = orders.size();
+            for (int i = 0; i < orderSize; i++) {
+                //add order details
+                orderDetails.put("itemId", orders.get(i).getName());
+                orderDetails.put("quantity", orders.get(i).getQuantity());
+                //put order details into this array
+                array.put(orderDetails);
+                orderDetails = new JSONObject();    //reset the orderDetail for a new item.
+            }
+            obj.put("order", array);
+
+            return obj.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 

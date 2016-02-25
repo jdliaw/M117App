@@ -77,9 +77,21 @@ public class DisplayMenuActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        JSONObject item3 = new JSONObject();
+        try {
+            item3.put("category", "Drink");
+            item3.put("name", "Sprite");
+            item3.put("price", 1.00);
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         JSONArray menuJSONArray = new JSONArray();
         menuJSONArray.put(item1);
         menuJSONArray.put(item2);
+        menuJSONArray.put(item3);
 
         JSONObject menuObj = new JSONObject();
         try {
