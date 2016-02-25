@@ -50,7 +50,11 @@ public class ShoppingCartActivity extends AppCompatActivity {
         //put into listview
         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shoppingCart);
         final ListView listView = (ListView)findViewById(R.id.shopping_cart);
-        View header = (View)getLayoutInflater().inflate(R.layout.header, listView, false);
+        View header = (View)getLayoutInflater().inflate(R.layout.header, null);
+        TextView headerText = (TextView) header.findViewById(R.id.list_header);
+        headerText.setText("This is my header!");
+
+
         listView.addHeaderView(header);
 
         listView.setAdapter(itemsAdapter);
