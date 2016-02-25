@@ -11,7 +11,7 @@
 
     <ListView
         android:id="@+id/shopping_cart"
-        android:background="#FF892E"
+        android:background="@drawable/listview_format"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         >

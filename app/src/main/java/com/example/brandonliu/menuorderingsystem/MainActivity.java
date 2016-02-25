@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 
 import org.json.JSONArray;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         orders[0] = new Order(5, 10, "no cheese");
         orders[1] = new Order(2, 1, "");
         //Log.d("117", sendOrder(orders));
+
 
         ScrollView sv = new ScrollView(this);
         LinearLayout ll = new LinearLayout(this);
@@ -67,7 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    //function to get GPS location from Andrew.
+    public static String getLocation() {
+        return null;
+    }
 
     //returns latitude and longitude as a JSON string.
     public static String sendLocation(Location loc) {

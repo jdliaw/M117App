@@ -33,6 +33,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
         cart.add("item1");
         cart.add("item2");
 
+
         ScrollView sv = new ScrollView(this);
         LinearLayout ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.VERTICAL);

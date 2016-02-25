@@ -52,10 +52,9 @@ public class ShoppingCartActivity extends AppCompatActivity {
         final ListView listView = (ListView)findViewById(R.id.shopping_cart);
         View header = (View)getLayoutInflater().inflate(R.layout.header, null);
         TextView headerText = (TextView) header.findViewById(R.id.list_header);
-        headerText.setText("This is my header!");
+        headerText.setText("HEADER TEST!");
 
-
-        listView.addHeaderView(header);
+        listView.addHeaderView(header, null, false);
 
         listView.setAdapter(itemsAdapter);
     }

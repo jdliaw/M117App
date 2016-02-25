@@ -50,11 +50,22 @@ public class PickStoreActivity extends AppCompatActivity {
         //sets adapter and creates the listview
         listView.setAdapter(itemsAdapter);
 
+        //adds header
+        View header = (View)getLayoutInflater().inflate(R.layout.header, null);
+        TextView headerText = (TextView) header.findViewById(R.id.list_header);
+        headerText.setText("HEADER TEST!");
+
+        //add header to listView. makes non-clickable
+        listView.addHeaderView(header, null, false);
+
+
         //sets onclick listener to start new activity. onItemClick = when we click a particular item
         listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> myAdapter, View myView, int myItemInt, long mylng) {
                 String selectedFromList = (String) (listView.getItemAtPosition(myItemInt));
-                Log.d("m117test", selectedFromList);    //test if we get the string we click
+                //Log.d("m117test", selectedFromList);    //test if we get the string we click
+
+                //technically should send the store clicked to
 
                 //move onto displayMenuActivity
                 startActivity(new Intent(PickStoreActivity.this, DisplayMenuActivity.class));

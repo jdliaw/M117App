@@ -3,5 +3,5 @@
     android:id="@+id/list_header"
     android:layout_width="match_parent"
     android:layout_height="16dip"
-    android:background="#F00"
-    android:text="Hardcoded text here"/>
+    android:text="Hardcoded text here"
+    android:background="@drawable/header_format"/>
