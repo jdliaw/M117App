@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -15,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,9 +41,26 @@ public class DisplayMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_menu);
 
+        //test data
+        parcelCart.add(new MenuItem("breakfast", "Eggs", 5));
+        parcelCart.get(0).setQuantity(11);
+        parcelCart.add(new MenuItem("breakfast", "Bacon", 7));
+        parcelCart.get(1).setQuantity(33);
+        parcelCart.add(new MenuItem("breakfast", "Waffle", 4));
+        parcelCart.get(2).setQuantity(66);
+        parcelCart.add(new MenuItem("lunch", "Panini", 6));
+        parcelCart.get(3).setQuantity(22);
+        parcelCart.add(new MenuItem("lunch", "Sandwich", 3));
+        parcelCart.get(4).setQuantity(55);
+        parcelCart.add(new MenuItem("dinner", "Potato", 1));
+        parcelCart.get(5).setQuantity(77);
+        parcelCart.add(new MenuItem("dinner", "Steak", 2));
+        parcelCart.get(6).setQuantity(44);
+
         expListView = (ExpandableListView) findViewById(R.id.expandablelistView);
         //getListData();
-        prepareListData();
+
+        prepareListData(parcelCart);
 
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
 
@@ -53,13 +72,20 @@ public class DisplayMenuActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
       /* You must make use of the View v, find the view by id and extract the text as below*/
-
+                /*
                 TextView tv = (TextView) v.findViewById(R.id.expandablelist_item);
 
                 String data = tv.getText().toString();
+                */
 
-                return true;  // i missed this
+
+                Intent intent = new Intent(DisplayMenuActivity.this, ShoppingCartActivity.class);
+                intent.putParcelableArrayListExtra("paramName", parcelCart);
+                startActivity(intent);
+                return true;
             }
+
+
         });
 
 /*
@@ -90,43 +116,39 @@ public class DisplayMenuActivity extends AppCompatActivity {
         */
     }
 
-    private void prepareListData() {
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
+    private void prepareListData(ArrayList<MenuItem> menu) {
+        listDataHeader = new ArrayList<String>();                                   //header which is the category
+        listDataChild = new HashMap<String, List<String>>();                        //maps string, category, to all of the items of that category
+        ArrayList<List<String>> listOfCategories = new ArrayList<List<String>>();   //holds entire menu separated by category. each list<string> are all the items of that specfic category
 
-        // Adding child data
-        listDataHeader.add("Top 250");
-        listDataHeader.add("Now Showing");
-        listDataHeader.add("Coming Soon..");
+        int numCategories = 0;          //tracks how many categories
+        int menuSize = menu.size();     //for iteration purposes (reduce function calls)
+        //gets categories
+        for(int i = 0; i < menuSize; i++) {
+            if(!listDataHeader.contains(menu.get(i).getCategory())) {               //if category isn't present
+                listDataHeader.add(menu.get(i).getCategory());                      //add this category
+                listOfCategories.add(new ArrayList<String>());                      //add list of items for that category index
+                numCategories++;                                                    //increment number of categories
+            }
+            //else, continue
+        }
 
-        // Adding child data
-        List<String> top250 = new ArrayList<String>();
-        top250.add("The Shawshank Redemption");
-        top250.add("The Godfather");
-        top250.add("The Godfather: Part II");
-        top250.add("Pulp Fiction");
-        top250.add("The Good, the Bad and the Ugly");
-        top250.add("The Dark Knight");
-        top250.add("12 Angry Men");
+        String cat = listDataHeader.get(0);     //first category
+        int whichCat = 0;
+        //assuming list is sorted
+        for(int i = 0; i < menuSize; i++) {
+            if(cat != menu.get(i).getCategory()) {
+                whichCat++;
+                if(whichCat == numCategories)
+                    break;
+                cat = listDataHeader.get(whichCat);
+            }
+            listOfCategories.get(whichCat).add(menu.get(i).getName() + "      Price: $" + Double.toString(menu.get(i).getPrice()));      //add
+        }
 
-        List<String> nowShowing = new ArrayList<String>();
-        nowShowing.add("The Conjuring");
-        nowShowing.add("Despicable Me 2");
-        nowShowing.add("Turbo");
-        nowShowing.add("Grown Ups 2");
-        nowShowing.add("Red 2");
-        nowShowing.add("The Wolverine");
-
-        List<String> comingSoon = new ArrayList<String>();
-        comingSoon.add("2 Guns");
-        comingSoon.add("The Smurfs 2");
-        comingSoon.add("The Spectacular Now");
-        comingSoon.add("The Canyons");
-        comingSoon.add("Europa Report");
-
-        listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), nowShowing);
-        listDataChild.put(listDataHeader.get(2), comingSoon);
+        for(int i = 0; i < numCategories; i++) {
+            listDataChild.put(listDataHeader.get(i), listOfCategories.get(i));
+        }
     }
 
     String createMenuArray() {

@@ -37,7 +37,8 @@ public class ShoppingCartActivity extends AppCompatActivity {
         //get Array List of menu items
         ArrayList<MenuItem> parcelCart = getIntent().getParcelableArrayListExtra("paramName");
         Log.d("shoppingCartSize", String.valueOf(parcelCart.size()));
-
+        //ArrayList<MenuItem> parcelCart = new ArrayList<MenuItem>();
+        //parcelCart.add(new MenuItem("bla", "bla", 5));
 
         //convert arrayList<MenuItem> into arrayList<String>
         ArrayList<String> shoppingCart = getCart(parcelCart);
