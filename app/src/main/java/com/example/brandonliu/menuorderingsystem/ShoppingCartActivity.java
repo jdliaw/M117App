@@ -76,7 +76,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         for(int i = 0; i < len; i++) {
             //create string that gets added to the arraylist of strings
             double price = allItems.get(i).getQuantity() * allItems.get(i).getPrice();
-            String temp = allItems.get(i).getPrice() + "         " +
+            String temp = allItems.get(i).getQuantity() + "         " +
                     allItems.get(i).getName() + "          $" +
                     dec.format(price);
             Log.d("print tempCart", temp);
