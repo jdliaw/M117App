@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,6 +36,8 @@ public class DisplayMenuActivity extends AppCompatActivity {
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
+
+    private static DecimalFormat dec = new DecimalFormat("#.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +146,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
                     break;
                 cat = listDataHeader.get(whichCat);
             }
-            listOfCategories.get(whichCat).add(menu.get(i).getName() + "      Price: $" + Double.toString(menu.get(i).getPrice()));      //add
+            listOfCategories.get(whichCat).add(menu.get(i).getName() + "             Price: $" + dec.format(menu.get(i).getPrice()));      //add
         }
 
         for(int i = 0; i < numCategories; i++) {

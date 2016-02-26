@@ -53,7 +53,7 @@ public class PickStoreActivity extends AppCompatActivity {
         //adds header
         View header = (View)getLayoutInflater().inflate(R.layout.header, null);
         TextView headerText = (TextView) header.findViewById(R.id.list_header);
-        headerText.setText("HEADER TEST!");
+        headerText.setText("Pick your store");
 
         //add header to listView. makes non-clickable
         listView.addHeaderView(header, null, false);
