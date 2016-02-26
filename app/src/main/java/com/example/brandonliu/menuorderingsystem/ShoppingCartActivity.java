@@ -45,7 +45,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         //get total quantity
         tax = getSubtotal(parcelCart) * taxRate;
         total = tax + getSubtotal(parcelCart);
-        shoppingCart.add("Total: $" + dec.format(total));
+        shoppingCart.add("Checkout:                                 $" + dec.format(total));
 
         //put into listview
         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shoppingCart);

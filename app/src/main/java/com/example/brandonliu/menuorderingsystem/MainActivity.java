@@ -85,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return null;
-
-
     }
 
     //returns storeID as a JSON string.

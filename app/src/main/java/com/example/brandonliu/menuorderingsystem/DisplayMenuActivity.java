@@ -17,6 +17,11 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import android.widget.ExpandableListView;
+
 
 public class DisplayMenuActivity extends AppCompatActivity {
 
@@ -24,14 +29,43 @@ public class DisplayMenuActivity extends AppCompatActivity {
     ArrayList<String> cart = new ArrayList();
     ArrayList<MenuItem> parcelCart = new ArrayList();
 
+    ExpandableListAdapter listAdapter;
+    ExpandableListView expListView;
+    List<String> listDataHeader;
+    HashMap<String, List<String>> listDataChild;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_menu);
 
+        expListView = (ExpandableListView) findViewById(R.id.expandablelistView);
+        //getListData();
+        prepareListData();
+
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+
+        expListView.setAdapter(listAdapter);
+
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+      /* You must make use of the View v, find the view by id and extract the text as below*/
+
+                TextView tv = (TextView) v.findViewById(R.id.expandablelist_item);
+
+                String data = tv.getText().toString();
+
+                return true;  // i missed this
+            }
+        });
+
+/*
         cart.add("item1");
         cart.add("item2");
+
 
 
         ScrollView sv = new ScrollView(this);
@@ -39,15 +73,60 @@ public class DisplayMenuActivity extends AppCompatActivity {
         ll.setOrientation(LinearLayout.VERTICAL);
         sv.addView(ll);
 
+        //generates a sample menu JSON String.
         String jsonMenu = createMenuArray();
-        MenuItem[] menu = decodeMenu(jsonMenu);
-        Arrays.sort(menu);
+
+        //given a string JSONobject, (can just use toString), convert into a menu array list
+        ArrayList<MenuItem> menu = decodeMenu(jsonMenu);
+        //sort by category
+        Collections.sort(menu);
+
         displayMenu(menu, ll);
 
         parcelCart.add(new MenuItem("breakfast", "20McNugs", 5));
         parcelCart.get(0).setQuantity(20);
         Log.d("parcelTest:", parcelCart.get(0).getName());
-        this.setContentView(sv);
+        //this.setContentView(sv);
+        */
+    }
+
+    private void prepareListData() {
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
+
+        // Adding child data
+        listDataHeader.add("Top 250");
+        listDataHeader.add("Now Showing");
+        listDataHeader.add("Coming Soon..");
+
+        // Adding child data
+        List<String> top250 = new ArrayList<String>();
+        top250.add("The Shawshank Redemption");
+        top250.add("The Godfather");
+        top250.add("The Godfather: Part II");
+        top250.add("Pulp Fiction");
+        top250.add("The Good, the Bad and the Ugly");
+        top250.add("The Dark Knight");
+        top250.add("12 Angry Men");
+
+        List<String> nowShowing = new ArrayList<String>();
+        nowShowing.add("The Conjuring");
+        nowShowing.add("Despicable Me 2");
+        nowShowing.add("Turbo");
+        nowShowing.add("Grown Ups 2");
+        nowShowing.add("Red 2");
+        nowShowing.add("The Wolverine");
+
+        List<String> comingSoon = new ArrayList<String>();
+        comingSoon.add("2 Guns");
+        comingSoon.add("The Smurfs 2");
+        comingSoon.add("The Spectacular Now");
+        comingSoon.add("The Canyons");
+        comingSoon.add("Europa Report");
+
+        listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
+        listDataChild.put(listDataHeader.get(1), nowShowing);
+        listDataChild.put(listDataHeader.get(2), comingSoon);
     }
 
     String createMenuArray() {
@@ -104,14 +183,14 @@ public class DisplayMenuActivity extends AppCompatActivity {
         return jstr;
     }
 
-    MenuItem[] decodeMenu(String menu){
+    public static ArrayList<MenuItem> decodeMenu(String menu){
         try {
             JSONObject jsonRootObject = new JSONObject(menu);
 
             //Get the instance of JSONArray that contains JSONObjects
             JSONArray jsonArray = jsonRootObject.getJSONArray("menu");
 
-            MenuItem[] itemArray = new MenuItem[jsonArray.length()];
+            ArrayList<MenuItem> itemArray = new ArrayList<>();
 
             //Iterate the jsonArray and print the info of JSONObjects
             for(int i=0; i < jsonArray.length(); i++){
@@ -122,17 +201,17 @@ public class DisplayMenuActivity extends AppCompatActivity {
                 String name = jsonObject.getString("name");
                 double price = jsonObject.getDouble("price");
 
-                itemArray[i] = new MenuItem(category, name, price);
+                itemArray.add(new MenuItem(category, name, price));
             }
             return itemArray;
         } catch (JSONException e) {e.printStackTrace();}
         return null;
     }
 
-
-    void displayMenu(MenuItem[] itemArray, LinearLayout ll)
+/*
+    void displayMenu(ArrayList<MenuItem> itemArray, LinearLayout ll)
     {
-        String lastCat = itemArray[0].getCategory();
+        String lastCat = itemArray.get(0).getCategory();
         TextView tv1 = new TextView(this);
         tv1.setText(lastCat);
         ll.addView(tv1);
@@ -143,9 +222,9 @@ public class DisplayMenuActivity extends AppCompatActivity {
         final Button add_to_cart = (Button)findViewById(R.id.add_to_cart);
 
         // display stores by shortest distance
-        for (int i = 0; i < itemArray.length; i++)
+        for (int i = 0; i < itemArray.size(); i++)
         {
-            String curCat = itemArray[i].getCategory();
+            String curCat = itemArray.get(i).getCategory();
             if (curCat != lastCat)
             {
                 TextView tv = new TextView(this);
@@ -155,7 +234,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
             }
             Button b = new Button(this);
             b.setBackgroundResource(R.drawable.button);
-            b.setText(itemArray[i].getName() + "      Price: $" + Double.toString(itemArray[i].getPrice()));
+            b.setText(itemArray.get(i).getName() + "      Price: $" + Double.toString(itemArray.get(i).getPrice()));
             ll.addView(b);
 
             b.setOnClickListener(new View.OnClickListener() {
@@ -173,7 +252,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
                     intent.putParcelableArrayListExtra(tag, parcelCart);
 
                     startActivity(intent);
-                    /*
+                    *//*
                     // make quantity label appear
                     if(qty.getVisibility() == View.GONE)
                         qty.setVisibility(View.VISIBLE);
@@ -189,12 +268,13 @@ public class DisplayMenuActivity extends AppCompatActivity {
                         add_to_cart.setVisibility(View.VISIBLE);
                     else
                         add_to_cart.setVisibility(View.GONE);
-                        */
+                        *//*
 
                 }
             });
         }
     }
+           */
 }
 
 //display menu:

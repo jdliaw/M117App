@@ -32,7 +32,7 @@ public class PickStoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_store);
 
-        //hard coded for now, it's the stores that we'll receive.
+        //testing purposes hard coded for now, it's the stores that we'll receive.
         String jsonStores = createStoreArray();
         //convert json object/array into an array of stores
         Store[] stores = decodeStores(jsonStores);
@@ -40,7 +40,7 @@ public class PickStoreActivity extends AppCompatActivity {
         Arrays.sort(stores);
 
 
-        //create an arraylist of strings to be displayed
+        //create an arraylist of strings to be displayed. trivial but too lazy to change for now.
         ArrayList<String> storesString = getStores(stores);
 
         //items adapter uses basic list layout and our arraylist of strings to create a list view
