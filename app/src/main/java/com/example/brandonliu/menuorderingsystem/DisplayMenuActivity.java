@@ -146,7 +146,9 @@ public class DisplayMenuActivity extends AppCompatActivity {
                     break;
                 cat = listDataHeader.get(whichCat);
             }
-            listOfCategories.get(whichCat).add(menu.get(i).getName() + "             Price: $" + dec.format(menu.get(i).getPrice()));      //add
+            String price = "Price: " + dec.format(menu.get(i).getPrice());
+            String formatMe = String.format("%s %20s", menu.get(i).getName(), price);
+            listOfCategories.get(whichCat).add(formatMe);      //add
         }
 
         for(int i = 0; i < numCategories; i++) {

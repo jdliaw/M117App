@@ -2,6 +2,8 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_header"
     android:layout_width="match_parent"
-    android:layout_height="16dip"
+    android:layout_height="32dip"
     android:text="Hardcoded text here"
+    android:textSize="32dp"
+    android:textColor="#FFFFFF"
     android:background="@drawable/header_format"/>

@@ -53,7 +53,7 @@ public class PickStoreActivity extends AppCompatActivity {
         //adds header
         View header = (View)getLayoutInflater().inflate(R.layout.header, null);
         TextView headerText = (TextView) header.findViewById(R.id.list_header);
-        headerText.setText("Pick your store");
+        headerText.setText(" Nearby Restaurants");
 
         //add header to listView. makes non-clickable
         listView.addHeaderView(header, null, false);
@@ -144,7 +144,7 @@ public class PickStoreActivity extends AppCompatActivity {
         ArrayList<String> storeArrayList = new ArrayList<String>();
         //iterates through the length on storeArray and adds to arrayList.
         for(int i = 0; i < len; i++) {
-            storeArrayList.add(storeArray[i].getName() + "\n Distance: " + Double.toString(storeArray[i].getDist()) + "mi");
+            storeArrayList.add(storeArray[i].getName() + "        " + Double.toString(storeArray[i].getDist()) + "mi");
         }
         return storeArrayList;
     }

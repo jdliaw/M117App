@@ -53,7 +53,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         final ListView listView = (ListView)findViewById(R.id.shopping_cart);
         View header = (View)getLayoutInflater().inflate(R.layout.header, null);
         TextView headerText = (TextView) header.findViewById(R.id.list_header);
-        headerText.setText("Your Cart");
+        headerText.setText(" Your Cart");
 
         listView.addHeaderView(header, null, false);
 
@@ -76,9 +76,13 @@ public class ShoppingCartActivity extends AppCompatActivity {
         for(int i = 0; i < len; i++) {
             //create string that gets added to the arraylist of strings
             double price = allItems.get(i).getQuantity() * allItems.get(i).getPrice();
-            String temp = allItems.get(i).getQuantity() + "         " +
+            String quan = String.valueOf(allItems.get(i).getQuantity());
+            String name = allItems.get(i).getName();
+            String pr = dec.format(price);
+            String temp = String.format("%s\t%s\t%s", quan, name, pr);
+           /* String temp = allItems.get(i).getQuantity() + "         " +
                     allItems.get(i).getName() + "          $" +
-                    dec.format(price);
+                    dec.format(price);*/
             Log.d("print tempCart", temp);
             tempCart.add(temp);
         }
