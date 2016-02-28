@@ -76,6 +76,7 @@ public class PickStoreActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 //                String selectedFromList = String.valueOf((TextView) findViewById(R.id.column1));
 //                Log.d("col1", selectedFromList);
+                //gets which we click. position-1 b/c header is position 0.
                 Log.d("stores:", stores[position-1].getName());
                 startActivity(new Intent(PickStoreActivity.this, DisplayMenuActivity.class));
             }
@@ -138,6 +139,8 @@ public class PickStoreActivity extends AppCompatActivity {
         return jstr;
     }
 
+    //supposed to be arrayList but too lazy to convert it so we have another function does so.
+    //at this point just keep it unless you want to change stuff up.
     Store[] decodeStores(String stores){
         try {
             JSONObject jsonRootObject = new JSONObject(stores);
@@ -173,11 +176,9 @@ public class PickStoreActivity extends AppCompatActivity {
         return storeArrayList;
     }
 
-
-
+    //currently unused
     void displayStores(Store[] storeArray, ListView storeList)
     {
-
         // display stores by shortest distance
         for (int i = 0; i < storeArray.length; i++)
         {

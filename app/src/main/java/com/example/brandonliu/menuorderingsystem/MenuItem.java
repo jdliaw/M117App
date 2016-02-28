@@ -38,7 +38,7 @@ public class MenuItem implements Comparable<MenuItem>, Parcelable {
     private double m_price;
     private int m_quantity;
 
-    //initializer in a sense...?
+    //initializer in a sense
     protected MenuItem(Parcel in) {
         m_cat = in.readString();
         m_name = in.readString();

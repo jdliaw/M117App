@@ -16,7 +16,7 @@ public class MulticolumnListAdapter extends BaseAdapter{
     TextView [] textViews;
     int [] rIds;
     int numCols;
-
+    //need to pass in the number of columns we want as well as which rids (column1, column2, etc very easy)
     public MulticolumnListAdapter(Activity activity, ArrayList<HashMap<String, String>> list, int numCols, int [] rIds) {
         super();
         this.activity=activity;
@@ -50,14 +50,16 @@ public class MulticolumnListAdapter extends BaseAdapter{
         LayoutInflater inflater=activity.getLayoutInflater();
 
         if(convertView == null){
-
+            //inflate the layout with our textviews.
             convertView=inflater.inflate(R.layout.listview_mult_columns, null);
+            //go through each one of our columns and select which textview xml format we use
             for(int i = 0; i < numCols; i++) {
                 textViews[i] = (TextView)convertView.findViewById(rIds[i]);
             }
         }
 
         HashMap<String, String> map=list.get(position);
+        //go through each of our textviews and place in our text. the map will be 0, 1, 2 for col
         for(int i = 0; i < numCols; i++) {
             textViews[i].setText(map.get(String.valueOf(i)));
         }

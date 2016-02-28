@@ -69,6 +69,15 @@ public class DisplayMenuActivity extends AppCompatActivity {
 
         expListView.setAdapter(listAdapter);
 
+        /*
+        * Currently this function, on clicking child of the expandable list view, sends us to
+        * a new activity (ShoppingCartActivity). What we want in the future is to check the child's
+        * position and use this position in accordance with the ArrayList of all items to
+        * find which item is clicked (note: headers do count as position I believe). Then we can
+        * pass this info into a fragment, select quantity and add to cart.
+        * Only when we press the very last button or whichever button is the "Checkout" button
+        * do we start a new activity and send our shopping cart array (through parcelable functions)
+        * */
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
             @Override
@@ -77,7 +86,9 @@ public class DisplayMenuActivity extends AppCompatActivity {
                 TextView tv = (TextView) v.findViewById(R.id.expandablelist_item);
                 String data = tv.getText().toString();
                 */
+                //go to shopping cart activity class. TODO: change this to fragment.
                 Intent intent = new Intent(DisplayMenuActivity.this, ShoppingCartActivity.class);
+                //currently passing in our entire shopping cart into shoppingCartActivity.
                 intent.putParcelableArrayListExtra("paramName", parcelCart);
                 startActivity(intent);
                 return true;
@@ -145,16 +156,19 @@ public class DisplayMenuActivity extends AppCompatActivity {
                     break;
                 cat = listDataHeader.get(whichCat);
             }
+            //formatting but it doesnt work. need to make multiple columns
             String price = "Price: " + dec.format(menu.get(i).getPrice());
             String formatMe = String.format("%s %20s", menu.get(i).getName(), price);
             listOfCategories.get(whichCat).add(formatMe);      //add
         }
 
+        //put the list of categories (as child) by header.
         for(int i = 0; i < numCategories; i++) {
             listDataChild.put(listDataHeader.get(i), listOfCategories.get(i));
         }
     }
 
+    //this function just generates a menu for testing purposes.
     String createMenuArray() {
 //        {
 //            "menu":[
@@ -209,6 +223,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
         return jstr;
     }
 
+    //takes a JSON string and converts into an arrayList of menu items.
     public static ArrayList<MenuItem> decodeMenu(String menu){
         try {
             JSONObject jsonRootObject = new JSONObject(menu);

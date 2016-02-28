@@ -99,6 +99,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
+    //we can select each child.
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
