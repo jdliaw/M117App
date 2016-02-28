@@ -1,6 +1,7 @@
 package com.example.brandonliu.menuorderingsystem;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,15 +18,17 @@ import android.widget.ListView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class PickStoreActivity extends AppCompatActivity {
-
+    private ArrayList<HashMap<String, String>> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,7 @@ public class PickStoreActivity extends AppCompatActivity {
         //testing purposes hard coded for now, it's the stores that we'll receive.
         String jsonStores = createStoreArray();
         //convert json object/array into an array of stores
-        Store[] stores = decodeStores(jsonStores);
+        final Store[] stores = decodeStores(jsonStores);
         //sort stores distance
         Arrays.sort(stores);
 
@@ -43,12 +46,22 @@ public class PickStoreActivity extends AppCompatActivity {
         //create an arraylist of strings to be displayed. trivial but too lazy to change for now.
         ArrayList<String> storesString = getStores(stores);
 
-        //items adapter uses basic list layout and our arraylist of strings to create a list view
-        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, storesString);
-
+        //get the listView
         final ListView listView = (ListView)findViewById(R.id.storelist);
-        //sets adapter and creates the listview
-        listView.setAdapter(itemsAdapter);
+
+        list = new ArrayList<HashMap<String,String>>();
+        //put in data for multi-column.
+        for(int i = 0; i < stores.length; i++) {
+            HashMap<String,String> temp=new HashMap<String, String>();
+            //put in data per row by column
+            temp.put("0", stores[i].getName());
+            temp.put("1", String.valueOf(stores[i].getDist()) + "mi");
+            list.add(temp);
+        }
+        //for the columns we want to use
+        int[]rIds = {R.id.column1, R.id.column2 };
+        MulticolumnListAdapter adapter=new MulticolumnListAdapter(this, list, 2, rIds );
+        listView.setAdapter(adapter);
 
         //adds header
         View header = (View)getLayoutInflater().inflate(R.layout.header, null);
@@ -58,7 +71,17 @@ public class PickStoreActivity extends AppCompatActivity {
         //add header to listView. makes non-clickable
         listView.addHeaderView(header, null, false);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+//                String selectedFromList = String.valueOf((TextView) findViewById(R.id.column1));
+//                Log.d("col1", selectedFromList);
+                Log.d("stores:", stores[position-1].getName());
+                startActivity(new Intent(PickStoreActivity.this, DisplayMenuActivity.class));
+            }
 
+        });
+/*
         //sets onclick listener to start new activity. onItemClick = when we click a particular item
         listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> myAdapter, View myView, int myItemInt, long mylng) {
@@ -71,6 +94,7 @@ public class PickStoreActivity extends AppCompatActivity {
                 startActivity(new Intent(PickStoreActivity.this, DisplayMenuActivity.class));
             }
         });
+        */
 
         //displayStores(stores, storeList);
 //        setContentView(R.layout.activity_pick_store);

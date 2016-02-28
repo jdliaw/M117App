@@ -44,20 +44,20 @@ public class DisplayMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_menu);
 
-        //test data
-        parcelCart.add(new MenuItem("breakfast", "Eggs", 5));
+        //generating hard coded test data that can easily be gotten by
+        parcelCart.add(new MenuItem("Breakfast", "Eggs", 5));
         parcelCart.get(0).setQuantity(11);
-        parcelCart.add(new MenuItem("breakfast", "Bacon", 7));
+        parcelCart.add(new MenuItem("Breakfast", "Bacon", 7));
         parcelCart.get(1).setQuantity(33);
-        parcelCart.add(new MenuItem("breakfast", "Waffle", 4));
+        parcelCart.add(new MenuItem("Breakfast", "Waffle", 4));
         parcelCart.get(2).setQuantity(66);
-        parcelCart.add(new MenuItem("lunch", "Panini", 6));
+        parcelCart.add(new MenuItem("Lunch", "Panini", 6));
         parcelCart.get(3).setQuantity(22);
-        parcelCart.add(new MenuItem("lunch", "Sandwich", 3));
+        parcelCart.add(new MenuItem("Lunch", "Sandwich", 3));
         parcelCart.get(4).setQuantity(55);
-        parcelCart.add(new MenuItem("dinner", "Potato", 1));
+        parcelCart.add(new MenuItem("Dinner", "Potato", 1));
         parcelCart.get(5).setQuantity(77);
-        parcelCart.add(new MenuItem("dinner", "Steak", 2));
+        parcelCart.add(new MenuItem("Dinner", "Steak", 2));
         parcelCart.get(6).setQuantity(44);
 
         expListView = (ExpandableListView) findViewById(R.id.expandablelistView);
@@ -73,15 +73,10 @@ public class DisplayMenuActivity extends AppCompatActivity {
 
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-
-      /* You must make use of the View v, find the view by id and extract the text as below*/
                 /*
                 TextView tv = (TextView) v.findViewById(R.id.expandablelist_item);
-
                 String data = tv.getText().toString();
                 */
-
-
                 Intent intent = new Intent(DisplayMenuActivity.this, ShoppingCartActivity.class);
                 intent.putParcelableArrayListExtra("paramName", parcelCart);
                 startActivity(intent);
@@ -94,8 +89,6 @@ public class DisplayMenuActivity extends AppCompatActivity {
 /*
         cart.add("item1");
         cart.add("item2");
-
-
 
         ScrollView sv = new ScrollView(this);
         LinearLayout ll = new LinearLayout(this);
@@ -118,12 +111,17 @@ public class DisplayMenuActivity extends AppCompatActivity {
         //this.setContentView(sv);
         */
     }
-
+    /*
+    * This function serves to take and ArrayList of menu items and prepare it into a usable format.
+    *  The function loops through the ArrayList to gather all the different categories of items to
+    *  be used as expandablelistview headers, and then place each item by category into the
+    *  category that it belongs in. It assumes the the ArrayList passed in is sorted by category
+    *  in the order the categories will be displayed.
+    * */
     private void prepareListData(ArrayList<MenuItem> menu) {
         listDataHeader = new ArrayList<String>();                                   //header which is the category
         listDataChild = new HashMap<String, List<String>>();                        //maps string, category, to all of the items of that category
         ArrayList<List<String>> listOfCategories = new ArrayList<List<String>>();   //holds entire menu separated by category. each list<string> are all the items of that specfic category
-
         int numCategories = 0;          //tracks how many categories
         int menuSize = menu.size();     //for iteration purposes (reduce function calls)
         //gets categories
@@ -140,6 +138,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
         int whichCat = 0;
         //assuming list is sorted
         for(int i = 0; i < menuSize; i++) {
+            //places item by category into the category it belongs in.
             if(cat != menu.get(i).getCategory()) {
                 whichCat++;
                 if(whichCat == numCategories)
@@ -227,7 +226,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
                 String category = jsonObject.getString("category");
                 String name = jsonObject.getString("name");
                 double price = jsonObject.getDouble("price");
-
+                //add to array.
                 itemArray.add(new MenuItem(category, name, price));
             }
             return itemArray;

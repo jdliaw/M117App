@@ -2,6 +2,8 @@ package com.example.brandonliu.menuorderingsystem;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.os.Parcel;
+import android.util.Log;
+
 /**
  * Created by Jennifer on 2/20/16.
  */
@@ -25,6 +27,7 @@ public class MenuItem implements Comparable<MenuItem>, Parcelable {
     public double getPrice() { return m_price; }
     public int getQuantity() { return m_quantity; }
     //set methods
+    public void setCategory(String cat) { m_cat = cat; }
     public void setQuantity(int quan) {
         m_quantity = quan;
     }
