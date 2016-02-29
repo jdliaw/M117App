@@ -4,6 +4,7 @@ package com.example.brandonliu.menuorderingsystem;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -20,9 +21,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+//import org.apache.http.HttpResponse;
+//import org.apache.http.client.HttpClient;
+//import org.apache.http.client.methods.HttpPost;
+//import org.apache.http.client.methods.HttpGet;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.MalformedURLException;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -37,6 +54,19 @@ public class PickStoreActivity extends AppCompatActivity {
 
         //testing purposes hard coded for now, it's the stores that we'll receive.
         String jsonStores = createStoreArray();
+
+        RequestTask getTask = new RequestTask();
+        try {
+            JSONObject httpData = getTask.execute("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441").get(10, TimeUnit.SECONDS);
+            //final Store[] httpStores = decodeStores(httpData.toString());
+            Log.d("httpget", httpData.toString());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        //Log.d("jsonStores1", jsonStores1);
+
         //convert json object/array into an array of stores
         final Store[] stores = decodeStores(jsonStores);
         //sort stores distance
@@ -100,6 +130,93 @@ public class PickStoreActivity extends AppCompatActivity {
         //displayStores(stores, storeList);
 //        setContentView(R.layout.activity_pick_store);
     }
+
+//    HttpResponse getStores()
+//    {
+//        HttpResponse response = null;
+//        try {
+//            HttpClient client = new DefaultHttpClient();
+//            HttpGet request = new HttpGet();
+//            request.setURI(new URI("https://www.googleapis.com/shopping/search/v1/public/products/?key={my_key}&country=&q=t-shirts&alt=json&rankByrelevancy="));
+//            response = client.execute(request);
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        } catch (ClientProtocolException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        return response;
+//    }
+
+//    public class getData extends AsyncTask<String, String, String>
+//    {
+//        HttpURLConnection urlConnection = null;
+//
+//        @Override
+//        protected String doInBackground(String... args) {
+//            StringBuilder result = new StringBuilder();
+//
+//            try {
+//                URL url = new URL("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441");
+//                urlConnection = (HttpURLConnection) url.openConnection();
+//                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+//
+//                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+//
+//                String line;
+//                while ((line = reader.readLine()) != null) {
+//                    result.append(line);
+//                    Log.d("httpget", line);
+//                }
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                urlConnection.disconnect();
+//            }
+//            return result.toString();
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String result) {
+//
+//            //Do something with the JSON string
+//            Log.d("onpostexecute",result);
+//
+//        }
+//
+//
+////        URL url;
+////        HttpURLConnection urlConnection = null;
+////        try {
+////            url = new URL("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441");
+////
+////            urlConnection = (HttpURLConnection) url
+////                    .openConnection();
+////
+////            InputStream in = urlConnection.getInputStream();
+////
+////            InputStreamReader isw = new InputStreamReader(in);
+////
+////            int data = isw.read();
+////            while (data != -1) {
+////                char current = (char) data;
+////                data = isw.read();
+////                Log.d("httpget", Character.toString(current));
+////            }
+////        } catch (Exception e) {
+////            e.printStackTrace();
+////        } finally {
+////            if (urlConnection != null) {
+////                urlConnection.disconnect();
+////            }
+////        }
+//    }
+
+
 
     //returns JSON string of stores
     String createStoreArray() {
