@@ -100,12 +100,13 @@ public class PickStoreActivity extends AppCompatActivity {
             HashMap<String,String> temp=new HashMap<String, String>();
             //put in data per row by column
             temp.put("0", " " + stores[i].getName());
-            temp.put("1", String.valueOf(stores[i].getDist()) + "mi");
+            temp.put("1", "");  //placeholder for column2
+            temp.put("2", String.valueOf(stores[i].getDist()) + "mi");
             list.add(temp);
         }
         //for the columns we want to use
-        int[]rIds = {R.id.column1, R.id.column2 };
-        MulticolumnListAdapter adapter=new MulticolumnListAdapter(this, list, 2, rIds );
+        int[]rIds = {R.id.column1, R.id.column2, R.id.column3 };    //col2 in placeholder
+        MulticolumnListAdapter adapter=new MulticolumnListAdapter(this, list, 3, rIds );
         listView.setAdapter(adapter);
 
         //adds header
@@ -239,7 +240,7 @@ public class PickStoreActivity extends AppCompatActivity {
         JSONObject store1 = new JSONObject();
         try {
             store1.put("storeID", 1);
-            store1.put("storeName", "McDonald's");
+            store1.put("storeName", "McDonald's, where memories are made");
             store1.put("distance", 6.7);
 
         } catch (JSONException e) {

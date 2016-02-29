@@ -56,10 +56,10 @@ public class ShoppingCartActivity extends AppCompatActivity {
         for(int i = 0; i < parcelCart.size(); i++) {
             HashMap<String, String> temp=new HashMap<String, String>();
             //put in data per row by column
-            temp.put("0", String.valueOf(parcelCart.get(i).getQuantity()));
+            temp.put("0", "   " + String.valueOf(parcelCart.get(i).getQuantity()));
             temp.put("1", parcelCart.get(i).getName());
             double price = parcelCart.get(i).getQuantity() * parcelCart.get(i).getPrice();
-            temp.put("2", dec.format(price));
+            temp.put("2", "       $" + dec.format(price));
             list.add(temp);
         }
 
