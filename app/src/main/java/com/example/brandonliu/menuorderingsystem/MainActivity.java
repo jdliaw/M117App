@@ -1,5 +1,6 @@
 package com.example.brandonliu.menuorderingsystem;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,10 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.Toast;
+import android.location.Location;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,20 +19,14 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
 
     Button b;
+    private double latitude;
+    private double longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //testing stuff
-        Location loc = new Location(2, 4);
-        Log.d("117", sendLocation(loc));
-        Log.d("117", sendStore(2));
-        Order[] orders = new Order[2];
-        orders[0] = new Order(5, 10, "no cheese");
-        orders[1] = new Order(2, 1, "");
-        //Log.d("117", sendOrder(orders));
-
 
         ScrollView sv = new ScrollView(this);
         LinearLayout ll = new LinearLayout(this);
@@ -39,20 +34,9 @@ public class MainActivity extends AppCompatActivity {
         sv.addView(ll);
         this.setContentView(sv);
 
-
-
-        /*
-        int lat = getLatitude();
-        int lon = getLongitude();
-
-        */
-        //button
-
+        //getLoc();
         b = new Button(this);
-        //Button b = (Button)findViewById(R.id.button);
-        String latStr = Integer.toString(loc.getLatitude());
-        String lonStr = Integer.toString(loc.getLongitude());
-        b.setText("Find a store near your location: (" + latStr + ", " + lonStr + ")");
+
         ll.addView(b);
 
 
@@ -65,6 +49,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+    }
+
+    public void getLoc()
+    {
+        MyLocation.LocationResult locationResult = new MyLocation.LocationResult(){
+            @Override
+            public void gotLocation(Location location){
+                //Got the location!
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+
+
+                String latStr = String.valueOf(latitude);
+                String lonStr = String.valueOf(longitude);
+                b.setText("Find a store near your location: (" + latStr + ", " + lonStr + ")");
+            }
+        };
+        MyLocation myLocation = new MyLocation();
+        myLocation.getLocation(this, locationResult);
 
 
     }

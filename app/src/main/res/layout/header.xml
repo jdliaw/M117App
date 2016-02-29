@@ -7,3 +7,5 @@
     android:textSize="32dp"
     android:textColor="#FFFFFF"
     android:background="@drawable/header_format"/>
+
+    <!--    android:typeface="monospace"-->

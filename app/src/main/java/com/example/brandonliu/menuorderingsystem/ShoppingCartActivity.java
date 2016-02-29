@@ -42,7 +42,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         //convert arrayList<MenuItem> into arrayList<String>
         ArrayList<String> shoppingCart = getCart(parcelCart);
 
-        //get total quantity
+        //get total quantity. when I created the listview I forgot to display this.
         tax = getSubtotal(parcelCart) * taxRate;
         total = tax + getSubtotal(parcelCart);
         shoppingCart.add("Checkout:                                 $" + dec.format(total));
@@ -62,6 +62,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
             temp.put("2", dec.format(price));
             list.add(temp);
         }
+
         //for the columns we want to use
         int[]rIds = {R.id.column1, R.id.column2, R.id.column3 };
         MulticolumnListAdapter adapter=new MulticolumnListAdapter(this, list, 3, rIds );

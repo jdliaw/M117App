@@ -18,6 +18,7 @@
         android:id="@+id/expandablelist_header"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:typeface="monospace"/>
 
 </LinearLayout>

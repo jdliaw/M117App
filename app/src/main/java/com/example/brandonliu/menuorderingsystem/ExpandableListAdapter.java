@@ -1,6 +1,7 @@
 package com.example.brandonliu.menuorderingsystem;
 
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import android.content.Context;
@@ -52,6 +53,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.expandablelist_item);
 
         txtListChild.setText(childText);
+        txtListChild.setTypeface(Typeface.MONOSPACE);
+
         return convertView;
     }
 
@@ -88,6 +91,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView lblListHeader = (TextView) convertView
                 .findViewById(R.id.expandablelist_header);
+
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
 
