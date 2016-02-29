@@ -99,7 +99,7 @@ public class PickStoreActivity extends AppCompatActivity {
         for(int i = 0; i < stores.length; i++) {
             HashMap<String,String> temp=new HashMap<String, String>();
             //put in data per row by column
-            temp.put("0", stores[i].getName());
+            temp.put("0", " " + stores[i].getName());
             temp.put("1", String.valueOf(stores[i].getDist()) + "mi");
             list.add(temp);
         }

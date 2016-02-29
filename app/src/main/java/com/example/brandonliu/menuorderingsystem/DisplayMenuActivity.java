@@ -157,8 +157,9 @@ public class DisplayMenuActivity extends AppCompatActivity {
                 cat = listDataHeader.get(whichCat);
             }
             //formatting but it doesnt work. need to make multiple columns
-            String price = "Price: " + dec.format(menu.get(i).getPrice());
-            String formatMe = String.format("%s %20s", menu.get(i).getName(), price);
+            String formatMe = formatCols(menu.get(i).getName(), menu.get(i).getPrice());
+            //String price = "Price: " + dec.format(menu.get(i).getPrice());
+            //String formatMe = String.format("%s %20s", menu.get(i).getName(), price);
             listOfCategories.get(whichCat).add(formatMe);      //add
         }
 
@@ -166,6 +167,17 @@ public class DisplayMenuActivity extends AppCompatActivity {
         for(int i = 0; i < numCategories; i++) {
             listDataChild.put(listDataHeader.get(i), listOfCategories.get(i));
         }
+    }
+
+    String formatCols(String name, double price) {
+        int i;
+        String formatMe = name;
+        for(i = name.length(); i < 32; i++) {
+            formatMe += " ";
+        }
+        formatMe += ("$"+dec.format(price));
+
+        return " " + formatMe;
     }
 
     //this function just generates a menu for testing purposes.
