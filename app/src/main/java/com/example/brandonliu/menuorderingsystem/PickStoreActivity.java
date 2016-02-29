@@ -55,9 +55,21 @@ public class PickStoreActivity extends AppCompatActivity {
         //testing purposes hard coded for now, it's the stores that we'll receive.
         String jsonStores = createStoreArray();
 
-        RequestTask getTask = new RequestTask();
+//        RequestTask getTask = new RequestTask();
+//        try {
+//            JSONObject httpData = getTask.execute("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441").get(10, TimeUnit.SECONDS);
+//            //final Store[] httpStores = decodeStores(httpData.toString());
+//            Log.d("httpget", httpData.toString());
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//        Log.d("httpget", "past");
+
+        HTTPTask getTask = new HTTPTask();
         try {
-            JSONObject httpData = getTask.execute("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441").get(10, TimeUnit.SECONDS);
+            JSONObject httpData = getTask.execute("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441").get(30, TimeUnit.SECONDS);
             //final Store[] httpStores = decodeStores(httpData.toString());
             Log.d("httpget", httpData.toString());
         }
@@ -65,6 +77,9 @@ public class PickStoreActivity extends AppCompatActivity {
         {
             e.printStackTrace();
         }
+        Log.d("httpget", "past");
+
+
         //Log.d("jsonStores1", jsonStores1);
 
         //convert json object/array into an array of stores
