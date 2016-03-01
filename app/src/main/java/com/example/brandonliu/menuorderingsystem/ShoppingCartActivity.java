@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.content.Intent;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,7 +38,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shopping_cart);
 
         //get Array List of menu items
-        ArrayList<MenuItem> parcelCart = getIntent().getParcelableArrayListExtra("paramName");
+        final ArrayList<MenuItem> parcelCart = getIntent().getParcelableArrayListExtra("paramName");
 
         //convert arrayList<MenuItem> into arrayList<String>
         ArrayList<String> shoppingCart = getCart(parcelCart);
@@ -53,15 +54,28 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
         list = new ArrayList<HashMap<String,String>>();
         //put in data for multi-column.
+        HashMap<String, String> temp=new HashMap<String, String>();
+        //put in a header
+        temp.put("0", "  Quantity");
+        temp.put("1", "Item");
+        temp.put("2", "      Total");
+        list.add(temp);
         for(int i = 0; i < parcelCart.size(); i++) {
-            HashMap<String, String> temp=new HashMap<String, String>();
             //put in data per row by column
-            temp.put("0", "   " + String.valueOf(parcelCart.get(i).getQuantity()));
+            temp=new HashMap<String, String>();
+            temp.put("0", "  " + String.valueOf(parcelCart.get(i).getQuantity()));
             temp.put("1", parcelCart.get(i).getName());
             double price = parcelCart.get(i).getQuantity() * parcelCart.get(i).getPrice();
-            temp.put("2", "       $" + dec.format(price));
+            temp.put("2", "      $" + dec.format(price));
             list.add(temp);
         }
+        //put in a footer for price.
+        temp = new HashMap<String, String>();
+        temp.put("0", "  Your Order:");
+        temp.put("1", "");
+        temp.put("2", "      $" + dec.format(getSubtotal(parcelCart)));
+                list.add(temp);
+
 
         //for the columns we want to use
         int[]rIds = {R.id.column1, R.id.column2, R.id.column3 };
@@ -74,6 +88,25 @@ public class ShoppingCartActivity extends AppCompatActivity {
         listView.addHeaderView(header, null, false);
 
         listView.setAdapter(adapter);
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+//                String selectedFromList = String.valueOf((TextView) findViewById(R.id.column1));
+//                Log.d("col1", selectedFromList);
+                //gets which we click. position-1 b/c header is position 0.
+               // Log.d("stores:", parcelCart.get(position-1).getName());
+                //offset by 2 because we have an actual header, a list header, and a footer.
+                if(position == parcelCart.size()+2) {
+                    Log.d("order", "your order");
+                    /* send menu to them */
+                    //sendOrder(parcelCart);
+                }
+            }
+        });
+
+
     }
 
     public static double getSubtotal(ArrayList<MenuItem> allItems) {

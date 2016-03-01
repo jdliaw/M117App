@@ -51,13 +51,13 @@ public class DisplayMenuActivity extends AppCompatActivity {
         parcelCart.add(new MenuItem("Breakfast", "Bacon", 7));
         parcelCart.get(1).setQuantity(33);
         parcelCart.add(new MenuItem("Breakfast", "Waffle", 4));
-        parcelCart.get(2).setQuantity(66);
+        parcelCart.get(2).setQuantity(6);
         parcelCart.add(new MenuItem("Lunch", "Panini", 6));
         parcelCart.get(3).setQuantity(22);
         parcelCart.add(new MenuItem("Lunch", "Sandwich", 3));
         parcelCart.get(4).setQuantity(55);
         parcelCart.add(new MenuItem("Dinner", "Potato", 1));
-        parcelCart.get(5).setQuantity(77);
+        parcelCart.get(5).setQuantity(788);
         parcelCart.add(new MenuItem("Dinner", "Steak", 2));
         parcelCart.get(6).setQuantity(44);
 
