@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 
 public class DisplayMenuActivity extends AppCompatActivity {
@@ -82,11 +83,17 @@ public class DisplayMenuActivity extends AppCompatActivity {
 
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                /*
-                TextView tv = (TextView) v.findViewById(R.id.expandablelist_item);
-                String data = tv.getText().toString();
-                */
                 //go to shopping cart activity class. TODO: change this to fragment.
+
+                //fullString is the entire string that is to be stripped.
+                String fullString = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
+                //strip of spaces:
+                String findMenuItem = stripString(fullString);
+
+                //returns the item that we want.
+                MenuItem sendMe = findItem(parcelCart, findMenuItem);
+                Log.d("MenuItemSend", sendMe.getName() + " " + sendMe.getPrice());
+
                 Intent intent = new Intent(DisplayMenuActivity.this, ShoppingCartActivity.class);
                 //currently passing in our entire shopping cart into shoppingCartActivity.
                 intent.putParcelableArrayListExtra("paramName", parcelCart);
@@ -168,7 +175,9 @@ public class DisplayMenuActivity extends AppCompatActivity {
             listDataChild.put(listDataHeader.get(i), listOfCategories.get(i));
         }
     }
-
+    /* this function is a workaround to formatting. we assume monospace and format the first col
+    to be 32 characters long
+     */
     String formatCols(String name, double price) {
         int i;
         String formatMe = name;
@@ -178,6 +187,31 @@ public class DisplayMenuActivity extends AppCompatActivity {
         formatMe += ("$"+dec.format(price));
 
         return " " + formatMe;
+    }
+
+    String stripString(String stripMe) {
+        //ex of Stripme with _ equivalent to a space: string Stripme = " Panini          $5.00";
+        String ret = "";
+        //start at 1 because we offset by 1 space for formatting. we should probably use padding instead.
+        for(int j = 1; j < stripMe.length(); j++) {
+            //we break when we hit a space.
+            if(stripMe.charAt(j) == ' ') {
+                break;
+            }
+            ret += Character.toString(stripMe.charAt(j));
+        }
+        return ret;
+    }
+
+    //given an MenuItem name, search through the entire menu to find a menuItem that has that name.
+    //This function will fail if we have items of same name diff categories.
+    MenuItem findItem(ArrayList<MenuItem> itemList, String item) {
+        for(int i = 0; i < itemList.size(); i++) {
+            if(item.equals(itemList.get(i).getName())) {
+                return itemList.get(i);
+            }
+         }
+        return null;
     }
 
     //this function just generates a menu for testing purposes.

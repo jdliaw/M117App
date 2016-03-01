@@ -39,6 +39,7 @@ import java.io.DataOutputStream;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import android.widget.AdapterView;
@@ -46,7 +47,6 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class PickStoreActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, String>> list;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +54,6 @@ public class PickStoreActivity extends AppCompatActivity {
 
         //testing purposes hard coded for now, it's the stores that we'll receive.
         String jsonStores = createStoreArray();
-
 //        RequestTask getTask = new RequestTask();
 //        try {
 //            JSONObject httpData = getTask.execute("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441").get(10, TimeUnit.SECONDS);

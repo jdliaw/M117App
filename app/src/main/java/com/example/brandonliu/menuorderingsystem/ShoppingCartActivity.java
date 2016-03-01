@@ -100,7 +100,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
            /* String temp = allItems.get(i).getQuantity() + "         " +
                     allItems.get(i).getName() + "          $" +
                     dec.format(price);*/
-            Log.d("print tempCart", temp);
+            //Log.d("print tempCart", temp);
             tempCart.add(temp);
         }
         return tempCart;
