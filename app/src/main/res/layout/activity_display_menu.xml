@@ -25,11 +25,24 @@
     start brandon's work
     -->
 
+
+
+
     <ExpandableListView
         android:id="@+id/expandablelistView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
     </ExpandableListView>
+
+    <Button
+        android:id="@+id/bottombutton"
+        android:background="@drawable/view_shopping_cart_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/expandablelistView"
+        />
+</RelativeLayout>
 
 
 
@@ -124,6 +137,3 @@
         android:text="@string/add_to_cart"
         android:visibility="gone"/>
     -->
-
-
-</RelativeLayout>

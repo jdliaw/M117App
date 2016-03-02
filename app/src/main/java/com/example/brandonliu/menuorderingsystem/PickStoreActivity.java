@@ -123,6 +123,8 @@ public class PickStoreActivity extends AppCompatActivity {
 //                Log.d("col1", selectedFromList);
                 //gets which we click. position-1 b/c header is position 0.
                 Log.d("stores:", stores[position-1].getName());
+                //http post/get requests
+                //generate menu here, send across?
                 startActivity(new Intent(PickStoreActivity.this, DisplayMenuActivity.class));
             }
 

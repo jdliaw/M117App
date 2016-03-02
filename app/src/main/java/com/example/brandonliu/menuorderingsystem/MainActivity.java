@@ -2,6 +2,7 @@ package com.example.brandonliu.menuorderingsystem;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -34,13 +35,14 @@ public class MainActivity extends AppCompatActivity {
         sv.addView(ll);
         this.setContentView(sv);
 
-        //getLoc();
         b = new Button(this);
+        b.setBackgroundColor(0xFF87CEFA);
+        b.setText("Searching for your location...");
+
+        /* getLoc(); is commented out because we dont have GPS location on emulator, so it crashes */
+        //getLoc();
 
         ll.addView(b);
-
-
-
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, PickStoreActivity.class));
             }
         });
-
-
-
     }
 
     public void getLoc()
@@ -61,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
                 //Got the location!
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
-
 
                 String latStr = String.valueOf(latitude);
                 String lonStr = String.valueOf(longitude);

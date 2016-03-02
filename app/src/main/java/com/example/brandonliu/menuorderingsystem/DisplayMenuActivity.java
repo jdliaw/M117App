@@ -62,13 +62,25 @@ public class DisplayMenuActivity extends AppCompatActivity {
         parcelCart.get(6).setQuantity(44);
 
         expListView = (ExpandableListView) findViewById(R.id.expandablelistView);
-        //getListData();
+
 
         prepareListData(parcelCart);
 
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
 
         expListView.setAdapter(listAdapter);
+
+        Button b = (Button)findViewById(R.id.bottombutton);
+        b.setText("View Shopping Cart");
+
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DisplayMenuActivity.this, ShoppingCartActivity.class);
+                intent.putParcelableArrayListExtra("paramName", parcelCart);
+                startActivity(intent);
+            }
+        });
 
         /*
         * Currently this function, on clicking child of the expandable list view, sends us to
@@ -93,11 +105,11 @@ public class DisplayMenuActivity extends AppCompatActivity {
                 //returns the item that we want.
                 MenuItem sendMe = findItem(parcelCart, findMenuItem);
                 Log.d("MenuItemSend", sendMe.getName() + " " + sendMe.getPrice());
-
                 Intent intent = new Intent(DisplayMenuActivity.this, ShoppingCartActivity.class);
+                intent.putExtra("paramName", sendMe);
                 //currently passing in our entire shopping cart into shoppingCartActivity.
-                intent.putParcelableArrayListExtra("paramName", parcelCart);
-                startActivity(intent);
+                //intent.putParcelableArrayListExtra("paramName", parcelCart);
+                //startActivity(intent);
                 return true;
             }
 
@@ -204,7 +216,8 @@ public class DisplayMenuActivity extends AppCompatActivity {
     }
 
     //given an MenuItem name, search through the entire menu to find a menuItem that has that name.
-    //This function will fail if we have items of same name diff categories.
+    //We assume that every item name is unique. this function will fail if we have items of same name
+    // even in diff categories.
     MenuItem findItem(ArrayList<MenuItem> itemList, String item) {
         for(int i = 0; i < itemList.size(); i++) {
             if(item.equals(itemList.get(i).getName())) {
