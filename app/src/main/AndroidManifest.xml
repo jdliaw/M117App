@@ -20,6 +20,9 @@
         <activity android:name=".PickStoreActivity" />
         <activity android:name=".DisplayMenuActivity" />
         <activity android:name=".ShoppingCartActivity"></activity>
+        <activity android:name=".Popup"
+            android:theme="@style/AppTheme.PopupTheme">
+        </activity>
     </application>
 
 </manifest>

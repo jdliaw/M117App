@@ -112,10 +112,11 @@ public class DisplayMenuActivity extends AppCompatActivity {
                 Log.d("MenuItemSend", sendMe.getName() + " " + sendMe.getPrice());
 
                 //Intent intent = new Intent(DisplayMenuActivity.this, AddToCart.class);    //add to cart would be a fragment?
-                Intent intent = new Intent(DisplayMenuActivity.this, ShoppingCartActivity.class);
-                intent.putExtra("paramName", sendMe);
+                Intent intent = new Intent(DisplayMenuActivity.this, Popup.class);
+                //intent.putExtra("paramName", sendMe);
                 //our intent now holds the menu item to send across to our fragment;
                 //startActivity(intent);
+                startActivity(intent);
                 return true;
             }
 
