@@ -6,6 +6,7 @@ import android.util.Log;
 import android.content.Intent;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.view.View;
@@ -89,24 +90,36 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
         listView.setAdapter(adapter);
 
+        Button b = (Button)findViewById(R.id.bottombutton);
+        b.setText("Check Out!");
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        b.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-//                String selectedFromList = String.valueOf((TextView) findViewById(R.id.column1));
-//                Log.d("col1", selectedFromList);
-                //gets which we click. position-1 b/c header is position 0.
-               // Log.d("stores:", parcelCart.get(position-1).getName());
-                //offset by 2 because we have an actual header, a list header, and a footer.
-                if(position == parcelCart.size()+2) {
-                    Log.d("order", "your order");
-                    /* send menu to them */
-                    //sendOrder(parcelCart);
-                }
+            public void onClick(View v) {
+                //these lines of code work if you wanna send something across. we might package it as a JSON object and send though?
+//                Intent intent = new Intent(ShoppingCartActivity.this, ShoppingCartActivity.class);
+//                intent.putParcelableArrayListExtra("paramName", parcelCart);
+//                startActivity(intent);
+
+                Log.d("Button", "clicked");
             }
         });
 
-
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+////                String selectedFromList = String.valueOf((TextView) findViewById(R.id.column1));
+////                Log.d("col1", selectedFromList);
+//                //gets which we click. position-1 b/c header is position 0.
+//               // Log.d("stores:", parcelCart.get(position-1).getName());
+//                //offset by 2 because we have an actual header, a list header, and a footer.
+//                if(position == parcelCart.size()+2) {
+//                    Log.d("order", "your order");
+//                    /* send menu to them */
+//                    //sendOrder(parcelCart);
+//                }
+//            }
+//        });
     }
 
     public static double getSubtotal(ArrayList<MenuItem> allItems) {

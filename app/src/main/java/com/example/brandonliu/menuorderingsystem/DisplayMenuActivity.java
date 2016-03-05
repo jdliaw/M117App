@@ -45,6 +45,10 @@ public class DisplayMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_menu);
 
+        //parcelCart = intent.getParcelableArrayList("paramName");
+
+
+
         //generating hard coded test data that can easily be gotten by
         parcelCart.add(new MenuItem("Breakfast", "Eggs", 5));
         parcelCart.get(0).setQuantity(11);
@@ -60,6 +64,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
         parcelCart.get(5).setQuantity(788);
         parcelCart.add(new MenuItem("Dinner", "Steak", 2));
         parcelCart.get(6).setQuantity(44);
+
 
         expListView = (ExpandableListView) findViewById(R.id.expandablelistView);
 
@@ -105,10 +110,11 @@ public class DisplayMenuActivity extends AppCompatActivity {
                 //returns the item that we want.
                 MenuItem sendMe = findItem(parcelCart, findMenuItem);
                 Log.d("MenuItemSend", sendMe.getName() + " " + sendMe.getPrice());
+
+                //Intent intent = new Intent(DisplayMenuActivity.this, AddToCart.class);    //add to cart would be a fragment?
                 Intent intent = new Intent(DisplayMenuActivity.this, ShoppingCartActivity.class);
                 intent.putExtra("paramName", sendMe);
-                //currently passing in our entire shopping cart into shoppingCartActivity.
-                //intent.putParcelableArrayListExtra("paramName", parcelCart);
+                //our intent now holds the menu item to send across to our fragment;
                 //startActivity(intent);
                 return true;
             }
@@ -376,13 +382,3 @@ public class DisplayMenuActivity extends AppCompatActivity {
     }
            */
 }
-
-//display menu:
-/*
-fragment with a spinner for quantity and add to cart button (and cancel button or something)
-this adds to a ArrayList<MenuItem> shoppingCart
-we'll send the shoppingCart to shoppingcartactivity
-
-there, we can parse for strings and display the menu
-
- */

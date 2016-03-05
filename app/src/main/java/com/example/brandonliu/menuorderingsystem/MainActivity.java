@@ -44,9 +44,13 @@ public class MainActivity extends AppCompatActivity {
 
         ll.addView(b);
 
+//        sendLocation(latitude, longitude);
+        //receive menu.
+
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /* send location and receive a list of stores. then send that list over */
                 startActivity(new Intent(MainActivity.this, PickStoreActivity.class));
             }
         });
@@ -78,11 +82,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //returns latitude and longitude as a JSON string.
-    public static String sendLocation(Location loc) {
+    public static String sendLocation(double lat, double lon) {
         try {
             JSONObject obj = new JSONObject();
-            obj.put("latitude", new Double(loc.getLatitude()));
-            obj.put("longitude", new Double(loc.getLongitude()));
+            obj.put("latitude", new Double(lat));
+            obj.put("longitude", new Double(lon));
             return obj.toString();
         } catch (JSONException e) {
             e.printStackTrace();

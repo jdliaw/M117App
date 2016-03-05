@@ -66,17 +66,17 @@ public class PickStoreActivity extends AppCompatActivity {
 //        }
 //        Log.d("httpget", "past");
 
-        HTTPTask getTask = new HTTPTask();
-        try {
-            JSONObject httpData = getTask.execute("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441").get(30, TimeUnit.SECONDS);
-            //final Store[] httpStores = decodeStores(httpData.toString());
-            Log.d("httpget", httpData.toString());
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        Log.d("httpget", "past");
+//        HTTPTask getTask = new HTTPTask();
+//        try {
+//            JSONObject httpData = getTask.execute("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441").get(30, TimeUnit.SECONDS);
+//            //final Store[] httpStores = decodeStores(httpData.toString());
+//            Log.d("httpget", httpData.toString());
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//        Log.d("httpget", "past");
 
 
         //Log.d("jsonStores1", jsonStores1);
@@ -123,8 +123,15 @@ public class PickStoreActivity extends AppCompatActivity {
 //                Log.d("col1", selectedFromList);
                 //gets which we click. position-1 b/c header is position 0.
                 Log.d("stores:", stores[position-1].getName());
-                //http post/get requests
-                //generate menu here, send across?
+
+
+                //http post request for store.
+                //http get request for menu
+                //parse JSON object into a menu: array list of items, and send across.
+                //we can use the decodeMenu function in the displayMenu activity.
+                //alternatively, we can just send the JSON Object/string across and then decode it there.
+
+
                 startActivity(new Intent(PickStoreActivity.this, DisplayMenuActivity.class));
             }
 
