@@ -1,22 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/popupMenu"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C00000"
-    >
-
-    <EditText
+    android:background="@drawable/popup_format"
+    android:weightSum="1">
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText2"
+        android:layout_height="48dp"
+        android:id="@+id/headerText"
         android:layout_gravity="center_horizontal"
-        android:text="Select Quantity" />
+        android:text="Select Quantity"
+        android:textSize="36dp"
+        android:background="@drawable/header_format" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:id="@+id/itemName"
+        android:layout_below="@id/headerText"/>
 
     <EditText
-        android:layout_width="124dp"
+        android:layout_width="64dp"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/editText" />
-</LinearLayout>
+        android:id="@+id/setQuan"
+        android:layout_below="@id/itemName"/>
+
+    <Button
+        android:layout_width="64dp"
+        android:layout_height="40dp"
+        android:background="@drawable/custom_button1"
+        android:text="Add To Cart!"
+        android:textSize="12dp"
+        android:id="@+id/button"
+        android:layout_alignTop="@+id/setQuan"
+        android:layout_toRightOf="@+id/setQuan"
+        android:layout_toEndOf="@+id/setQuan" />
+
+
+</RelativeLayout>

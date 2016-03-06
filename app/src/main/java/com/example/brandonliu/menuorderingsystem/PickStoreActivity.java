@@ -123,6 +123,7 @@ public class PickStoreActivity extends AppCompatActivity {
 //                Log.d("col1", selectedFromList);
                 //gets which we click. position-1 b/c header is position 0.
                 Log.d("stores:", stores[position-1].getName());
+                startActivity(new Intent(PickStoreActivity.this, DisplayMenuActivity.class));
 
 
                 //http post request for store.
@@ -131,8 +132,6 @@ public class PickStoreActivity extends AppCompatActivity {
                 //we can use the decodeMenu function in the displayMenu activity.
                 //alternatively, we can just send the JSON Object/string across and then decode it there.
 
-
-                startActivity(new Intent(PickStoreActivity.this, DisplayMenuActivity.class));
             }
 
         });
@@ -329,7 +328,25 @@ public class PickStoreActivity extends AppCompatActivity {
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(PickStoreActivity.this, DisplayMenuActivity.class));
+                    ArrayList<MenuItem> parcelCart= new ArrayList<MenuItem>();
+                    parcelCart.add(new MenuItem("Breakfast", "Eggs", 5));
+                    parcelCart.get(0).setQuantity(11);
+                    parcelCart.add(new MenuItem("Breakfast", "Bacon", 7));
+                    parcelCart.get(1).setQuantity(33);
+                    parcelCart.add(new MenuItem("Breakfast", "Waffle", 4));
+                    parcelCart.get(2).setQuantity(6);
+                    parcelCart.add(new MenuItem("Lunch", "Panini", 6));
+                    parcelCart.get(3).setQuantity(22);
+                    parcelCart.add(new MenuItem("Lunch", "Sandwich", 3));
+                    parcelCart.get(4).setQuantity(55);
+                    parcelCart.add(new MenuItem("Dinner", "Potato", 1));
+                    parcelCart.get(5).setQuantity(788);
+                    parcelCart.add(new MenuItem("Dinner", "Steak", 2));
+                    parcelCart.get(6).setQuantity(44);
+                    Intent intent = new Intent(PickStoreActivity.this, DisplayMenuActivity.class);
+                    intent.putParcelableArrayListExtra("paramName", parcelCart);
+
+                    startActivity(intent);
                 }
             });
         }

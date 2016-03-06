@@ -31,7 +31,9 @@ public class DisplayMenuActivity extends AppCompatActivity {
 
 
     ArrayList<String> cart = new ArrayList();
-    ArrayList<MenuItem> parcelCart = new ArrayList();
+    ArrayList<MenuItem> parcelCart = new ArrayList<MenuItem>();
+    public static ArrayList<MenuItem> shoppingCart = new ArrayList<MenuItem>();
+    MenuItem addedItem;
 
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
@@ -41,13 +43,28 @@ public class DisplayMenuActivity extends AppCompatActivity {
     private static DecimalFormat dec = new DecimalFormat("#.00");
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_display_menu);
 
         //parcelCart = intent.getParcelableArrayList("paramName");
 
-
+        if(getIntent().getParcelableArrayListExtra("paramName") != null) {
+            parcelCart = getIntent().getParcelableArrayListExtra("paramName");
+            Log.d("test", "sent!");
+            Log.d("test", parcelCart.get(0).getName());
+        }
+        else if(getIntent().getExtras() != null) {
+            addedItem = getIntent().getExtras().getParcelable("popup");
+            Log.d("test", addedItem.getName() + " YAYYYYYY ");
+            Log.d("test", String.valueOf(addedItem.getQuantity()));
+            shoppingCart.add(addedItem);
+            Log.d("shoppingcart size", String.valueOf(shoppingCart.size()));
+        }
+        else {
+            Log.d("non array list", "didnt send");
+        }
 
         //generating hard coded test data that can easily be gotten by
         parcelCart.add(new MenuItem("Breakfast", "Eggs", 5));
@@ -78,11 +95,13 @@ public class DisplayMenuActivity extends AppCompatActivity {
         Button b = (Button)findViewById(R.id.bottombutton);
         b.setText("View Shopping Cart");
 
+
+        /* button to go to shopping cart */
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DisplayMenuActivity.this, ShoppingCartActivity.class);
-                intent.putParcelableArrayListExtra("paramName", parcelCart);
+                intent.putParcelableArrayListExtra("paramName", shoppingCart);
                 startActivity(intent);
             }
         });
@@ -111,11 +130,10 @@ public class DisplayMenuActivity extends AppCompatActivity {
                 MenuItem sendMe = findItem(parcelCart, findMenuItem);
                 Log.d("MenuItemSend", sendMe.getName() + " " + sendMe.getPrice());
 
-                //Intent intent = new Intent(DisplayMenuActivity.this, AddToCart.class);    //add to cart would be a fragment?
                 Intent intent = new Intent(DisplayMenuActivity.this, Popup.class);
-                //intent.putExtra("paramName", sendMe);
+                intent.putExtra("paramName", sendMe);
+                intent.putParcelableArrayListExtra("shoppingCart", shoppingCart);
                 //our intent now holds the menu item to send across to our fragment;
-                //startActivity(intent);
                 startActivity(intent);
                 return true;
             }
@@ -123,30 +141,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
 
         });
 
-/*
-        cart.add("item1");
-        cart.add("item2");
 
-        ScrollView sv = new ScrollView(this);
-        LinearLayout ll = new LinearLayout(this);
-        ll.setOrientation(LinearLayout.VERTICAL);
-        sv.addView(ll);
-
-        //generates a sample menu JSON String.
-        String jsonMenu = createMenuArray();
-
-        //given a string JSONobject, (can just use toString), convert into a menu array list
-        ArrayList<MenuItem> menu = decodeMenu(jsonMenu);
-        //sort by category
-        Collections.sort(menu);
-
-        displayMenu(menu, ll);
-
-        parcelCart.add(new MenuItem("breakfast", "20McNugs", 5));
-        parcelCart.get(0).setQuantity(20);
-        Log.d("parcelTest:", parcelCart.get(0).getName());
-        //this.setContentView(sv);
-        */
     }
     /*
     * This function serves to take and ArrayList of menu items and prepare it into a usable format.
@@ -315,71 +310,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
         return null;
     }
 
-/*
-    void displayMenu(ArrayList<MenuItem> itemArray, LinearLayout ll)
-    {
-        String lastCat = itemArray.get(0).getCategory();
-        TextView tv1 = new TextView(this);
-        tv1.setText(lastCat);
-        ll.addView(tv1);
-
-        // for displaying quantity spinner and add to cart button later onclick
-        final TextView qty = (TextView)findViewById(R.id.quantity_label);
-        final Spinner qty_spinner = (Spinner)findViewById(R.id.quantity_spinner);
-        final Button add_to_cart = (Button)findViewById(R.id.add_to_cart);
-
-        // display stores by shortest distance
-        for (int i = 0; i < itemArray.size(); i++)
-        {
-            String curCat = itemArray.get(i).getCategory();
-            if (curCat != lastCat)
-            {
-                TextView tv = new TextView(this);
-                tv.setText(curCat);
-                ll.addView(tv);
-                lastCat = curCat;
-            }
-            Button b = new Button(this);
-            b.setBackgroundResource(R.drawable.button);
-            b.setText(itemArray.get(i).getName() + "      Price: $" + Double.toString(itemArray.get(i).getPrice()));
-            ll.addView(b);
-
-            b.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    String tag = "paramName";
-                    Intent intent = new Intent(DisplayMenuActivity.this, ShoppingCartActivity.class);
-                    //String [] sendMe  = new String[] {"test1", "test2"};
-                    //String sendMe = "test";
-
-                    //intent.putExtra(tag, sendMe);
-                    //intent.putStringArrayListExtra(tag, cart);
-
-                    intent.putParcelableArrayListExtra(tag, parcelCart);
-
-                    startActivity(intent);
-                    *//*
-                    // make quantity label appear
-                    if(qty.getVisibility() == View.GONE)
-                        qty.setVisibility(View.VISIBLE);
-                    else
-                        qty.setVisibility(View.GONE);
-                    // make quantity spinner appear
-                    if(qty_spinner.getVisibility() == View.GONE)
-                        qty_spinner.setVisibility(View.VISIBLE);
-                    else
-                        qty_spinner.setVisibility(View.GONE);
-                    // make add to cart button appear
-                    if(add_to_cart.getVisibility() == View.GONE)
-                        add_to_cart.setVisibility(View.VISIBLE);
-                    else
-                        add_to_cart.setVisibility(View.GONE);
-                        *//*
-
-                }
-            });
-        }
+    public static ArrayList<MenuItem> getShoppingCart() {
+        return shoppingCart;
     }
-           */
 }

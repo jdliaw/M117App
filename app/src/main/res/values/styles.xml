@@ -21,7 +21,8 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
         <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:backgroundDimAmount">0.5</item>﻿
+        <item name="android:backgroundDimAmount">.7</item>﻿
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
 

@@ -18,7 +18,7 @@
     </ListView>
     <Button
         android:id="@+id/bottombutton"
-        android:background="@drawable/view_shopping_cart_button"
+        android:background="@drawable/custom_button1"
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_below="@id/shopping_cart"
