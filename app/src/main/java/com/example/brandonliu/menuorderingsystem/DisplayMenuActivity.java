@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
@@ -33,6 +35,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
     ArrayList<String> cart = new ArrayList();
     public static ArrayList<MenuItem> parcelCart = new ArrayList<MenuItem>();
     public static ArrayList<MenuItem> shoppingCart = new ArrayList<MenuItem>();
+    public static String storeId;
     MenuItem addedItem;
 
     ExpandableListAdapter listAdapter;
@@ -50,52 +53,98 @@ public class DisplayMenuActivity extends AppCompatActivity {
 
         //parcelCart = intent.getParcelableArrayList("paramName");
 
-        if(getIntent().getParcelableArrayListExtra("paramName") != null) {
-            parcelCart = getIntent().getParcelableArrayListExtra("paramName");
-            Log.d("test", "sent!");
-            Log.d("test", parcelCart.get(0).getName());
+//        if(getIntent().getParcelableArrayListExtra("paramName") != null) {
+//            parcelCart = getIntent().getParcelableArrayListExtra("paramName");
+//            Log.d("test", "sent!");
+//            Log.d("test", parcelCart.get(0).getName());
+//        }
+        //grab storeId
+        if(getIntent().getStringExtra("selectedStore") != null) {
+            storeId = getIntent().getStringExtra("selectedStore");
+            Log.d("store id", storeId);
         }
-        else if(getIntent().getExtras() != null) {
+        else {
+            Log.d("didn't get", "store id");
+            storeId = "";
+        }
+        //grab added item from menu if applicable
+        if(getIntent().getExtras().getParcelable("popup") != null) {
             addedItem = getIntent().getExtras().getParcelable("popup");
-            Log.d("test", String.valueOf(addedItem.getQuantity()));
+            //only add if there's quantity greater than 0.
             if(addedItem.getQuantity() > 0) {
                 shoppingCart.add(addedItem);
             }
         }
         else {
-            Log.d("non array list", "didnt send");
+            Log.d("popup", "really didnt send");
         }
 
-        Log.d("menusize", String.valueOf(parcelCart.size()));
-        //generating hard coded test data that can easily be gotten by
-//        parcelCart.add(new MenuItem("Breakfast", "Eggs", 5));
-//        parcelCart.get(0).setQuantity(11);
-//        parcelCart.add(new MenuItem("Breakfast", "Bacon", 7));
-//        parcelCart.get(1).setQuantity(33);
-//        parcelCart.add(new MenuItem("Breakfast", "Waffle", 4));
-//        parcelCart.get(2).setQuantity(6);
-//        parcelCart.add(new MenuItem("Lunch", "Panini", 6));
-//        parcelCart.get(3).setQuantity(22);
-//        parcelCart.add(new MenuItem("Lunch", "Sandwich", 3));
-//        parcelCart.get(4).setQuantity(55);
-//        parcelCart.add(new MenuItem("Dinner", "Potato", 1));
-//        parcelCart.get(5).setQuantity(788);
-//        parcelCart.add(new MenuItem("Dinner", "Steak", 2));
-//        parcelCart.get(6).setQuantity(44);
+        //http get request
+        String menuRequest = "http://project-order-food.appspot.com/get_menu?storeId=" + storeId;
+        String httpMenu = "";
+        final HTTPTask getMenuTask = new HTTPTask(); // need to make a new httptask for each request
+        try {
+            // try the getTask with actual location from gps
+            JSONObject httpMenuData = getMenuTask.execute(menuRequest).get(30, TimeUnit.SECONDS);
+            httpMenu = httpMenuData.toString();
+            Log.d("httpget", "menuget worked");
+            Log.d("httpget", httpMenu);
+        }
+        catch (Exception e)
+        {
+            Log.d("httpget", "menuget failed");
+            e.printStackTrace();
+        }
+        Log.d("httpget", "past menuget");
+
+        //decode menu now working.
+        parcelCart = decodeMenu(httpMenu);
+        if(parcelCart.size() != 0) {
+            expListView = (ExpandableListView) findViewById(R.id.expandablelistView);
+            prepareListData(parcelCart);
+            listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+            expListView.setAdapter(listAdapter);
+
+                    /*
+        * Currently this function, on clicking child of the expandable list view, sends us to
+        * a new activity (ShoppingCartActivity). What we want in the future is to check the child's
+        * position and use this position in accordance with the ArrayList of all items to
+        * find which item is clicked (note: headers do count as position I believe). Then we can
+        * pass this info into a fragment, select quantity and add to cart.
+        * Only when we press the very last button or whichever button is the "Checkout" button
+        * do we start a new activity and send our shopping cart array (through parcelable functions)
+        * */
+
+            expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+                @Override
+                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                    //go to shopping cart activity class. TODO: change this to fragment.
+
+                    //fullString is the entire string that is to be stripped.
+                    String fullString = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
+                    //strip of spaces
+                    String findMenuItem = stripString(fullString);
+
+                    //returns the item that we want.
+                    MenuItem sendMe = findItem(parcelCart, findMenuItem);
+                    Log.d("MenuItemSend", sendMe.getName() + " " + sendMe.getPrice());
+
+                    Intent intent = new Intent(DisplayMenuActivity.this, Popup.class);
+                    intent.putExtra("paramName", sendMe);
+                    intent.putExtra("storeId", storeId);
+                    //our intent now holds the menu item to send across to our fragment;
+                    startActivity(intent);
+                    return true;
+                }
 
 
-        expListView = (ExpandableListView) findViewById(R.id.expandablelistView);
+            });
+        }
 
-
-        prepareListData(parcelCart);
-
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
-
-        expListView.setAdapter(listAdapter);
 
         Button b = (Button)findViewById(R.id.bottombutton);
         b.setText("View Shopping Cart");
-
 
         /* button to go to shopping cart */
         b.setOnClickListener(new View.OnClickListener() {
@@ -107,42 +156,6 @@ public class DisplayMenuActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        * Currently this function, on clicking child of the expandable list view, sends us to
-        * a new activity (ShoppingCartActivity). What we want in the future is to check the child's
-        * position and use this position in accordance with the ArrayList of all items to
-        * find which item is clicked (note: headers do count as position I believe). Then we can
-        * pass this info into a fragment, select quantity and add to cart.
-        * Only when we press the very last button or whichever button is the "Checkout" button
-        * do we start a new activity and send our shopping cart array (through parcelable functions)
-        * */
-        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                //go to shopping cart activity class. TODO: change this to fragment.
-
-                //fullString is the entire string that is to be stripped.
-                String fullString = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
-                //strip of spaces:
-                String findMenuItem = stripString(fullString);
-
-                //returns the item that we want.
-                MenuItem sendMe = findItem(parcelCart, findMenuItem);
-                Log.d("MenuItemSend", sendMe.getName() + " " + sendMe.getPrice());
-
-                Intent intent = new Intent(DisplayMenuActivity.this, Popup.class);
-                intent.putExtra("paramName", sendMe);
-                intent.putParcelableArrayListExtra("shoppingCart", shoppingCart);
-                //our intent now holds the menu item to send across to our fragment;
-                startActivity(intent);
-                return true;
-            }
-
-
-        });
-
-
     }
     /*
     * This function serves to take and ArrayList of menu items and prepare it into a usable format.
@@ -152,6 +165,10 @@ public class DisplayMenuActivity extends AppCompatActivity {
     *  in the order the categories will be displayed.
     * */
     private void prepareListData(ArrayList<MenuItem> menu) {
+        if(menu.size() == 0) {
+            Log.d("Warning", "menu sie is 0");
+            return;
+        }
         listDataHeader = new ArrayList<String>();                                   //header which is the category
         listDataChild = new HashMap<String, List<String>>();                        //maps string, category, to all of the items of that category
         ArrayList<List<String>> listOfCategories = new ArrayList<List<String>>();   //holds entire menu separated by category. each list<string> are all the items of that specfic category

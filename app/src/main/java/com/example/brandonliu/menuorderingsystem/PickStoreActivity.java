@@ -119,19 +119,20 @@ public class PickStoreActivity extends AppCompatActivity {
                 //gets which we click. position-1 b/c header is position 0.
                 Log.d("stores:", stores[position - 1].getName());
 //                startActivity(new Intent(PickStoreActivity.this, DisplayMenuActivity.class));
+                String selectedStoreId = Integer.toString(stores[position-1].getID());
 
-
-                parcelCart.add(new MenuItem("Breakfast", "Eggs", 5));
-                parcelCart.add(new MenuItem("Breakfast", "Bacon", 7));
-                parcelCart.add(new MenuItem("Breakfast", "Waffle", 4));
-                parcelCart.add(new MenuItem("Lunch", "Panini", 6));
-                parcelCart.add(new MenuItem("Lunch", "Sandwich", 3));
-                parcelCart.add(new MenuItem("Dinner", "Potato", 1));
-                parcelCart.add(new MenuItem("Dinner", "Steak", 2));
+//                parcelCart.add(new MenuItem("Breakfast", "Eggs", 5));
+//                parcelCart.add(new MenuItem("Breakfast", "Bacon", 7));
+//                parcelCart.add(new MenuItem("Breakfast", "Waffle", 4));
+//                parcelCart.add(new MenuItem("Lunch", "Panini", 6));
+//                parcelCart.add(new MenuItem("Lunch", "Sandwich", 3));
+//                parcelCart.add(new MenuItem("Dinner", "Potato", 1));
+//                parcelCart.add(new MenuItem("Dinner", "Steak", 2));
 
 
                 Intent intent = new Intent(PickStoreActivity.this, DisplayMenuActivity.class);
-                intent.putParcelableArrayListExtra("paramName", parcelCart);
+                //intent.putParcelableArrayListExtra("paramName", parcelCart);
+                intent.putExtra("selectedStore", selectedStoreId);
                 startActivity(intent);
 
 

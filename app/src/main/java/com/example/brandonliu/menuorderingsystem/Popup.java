@@ -20,6 +20,7 @@ import java.util.ArrayList;
 public class Popup extends Activity {
     private EditText item_quantity;
     MenuItem menuItem;
+    public static String storeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,9 @@ public class Popup extends Activity {
         //popup menu layout + drawables + themes etc take care of dimming backround, corners, colors, etc.
         setContentView(R.layout.popup_window);
         menuItem = getIntent().getExtras().getParcelable("paramName");
-        //ArrayList<MenuItem> shoppingCart = getIntent().getParcelableArrayListExtra("shoppingCart");
+        storeId = getIntent().getStringExtra("storeId");
+
+        Log.e("storeidtest", storeId);
 
 
         //Log.d("Test arraylist", String.valueOf(shoppingCart.size()));
@@ -66,7 +69,9 @@ public class Popup extends Activity {
                 else {
                     menuItem.setQuantity(Integer.valueOf(test));
                 }
+                //send store
                 intent.putExtra("popup", menuItem);
+                intent.putExtra("selectedStore", storeId);
                 startActivity(intent);
             }
         });
