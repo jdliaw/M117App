@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 /* send location and receive a list of stores. then send that list over */
-                startActivity(new Intent(MainActivity.this, PickStoreActivity.class));
+                Intent intent = new Intent(MainActivity.this, PickStoreActivity.class);
+                startActivity(intent);
             }
         });
     }

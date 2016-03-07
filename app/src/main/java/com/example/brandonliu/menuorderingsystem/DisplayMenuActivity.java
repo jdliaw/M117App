@@ -31,7 +31,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
 
 
     ArrayList<String> cart = new ArrayList();
-    ArrayList<MenuItem> parcelCart = new ArrayList<MenuItem>();
+    public static ArrayList<MenuItem> parcelCart = new ArrayList<MenuItem>();
     public static ArrayList<MenuItem> shoppingCart = new ArrayList<MenuItem>();
     MenuItem addedItem;
 
@@ -66,21 +66,22 @@ public class DisplayMenuActivity extends AppCompatActivity {
             Log.d("non array list", "didnt send");
         }
 
+        Log.d("menusize", String.valueOf(parcelCart.size()));
         //generating hard coded test data that can easily be gotten by
-        parcelCart.add(new MenuItem("Breakfast", "Eggs", 5));
-        parcelCart.get(0).setQuantity(11);
-        parcelCart.add(new MenuItem("Breakfast", "Bacon", 7));
-        parcelCart.get(1).setQuantity(33);
-        parcelCart.add(new MenuItem("Breakfast", "Waffle", 4));
-        parcelCart.get(2).setQuantity(6);
-        parcelCart.add(new MenuItem("Lunch", "Panini", 6));
-        parcelCart.get(3).setQuantity(22);
-        parcelCart.add(new MenuItem("Lunch", "Sandwich", 3));
-        parcelCart.get(4).setQuantity(55);
-        parcelCart.add(new MenuItem("Dinner", "Potato", 1));
-        parcelCart.get(5).setQuantity(788);
-        parcelCart.add(new MenuItem("Dinner", "Steak", 2));
-        parcelCart.get(6).setQuantity(44);
+//        parcelCart.add(new MenuItem("Breakfast", "Eggs", 5));
+//        parcelCart.get(0).setQuantity(11);
+//        parcelCart.add(new MenuItem("Breakfast", "Bacon", 7));
+//        parcelCart.get(1).setQuantity(33);
+//        parcelCart.add(new MenuItem("Breakfast", "Waffle", 4));
+//        parcelCart.get(2).setQuantity(6);
+//        parcelCart.add(new MenuItem("Lunch", "Panini", 6));
+//        parcelCart.get(3).setQuantity(22);
+//        parcelCart.add(new MenuItem("Lunch", "Sandwich", 3));
+//        parcelCart.get(4).setQuantity(55);
+//        parcelCart.add(new MenuItem("Dinner", "Potato", 1));
+//        parcelCart.get(5).setQuantity(788);
+//        parcelCart.add(new MenuItem("Dinner", "Steak", 2));
+//        parcelCart.get(6).setQuantity(44);
 
 
         expListView = (ExpandableListView) findViewById(R.id.expandablelistView);
@@ -165,13 +166,14 @@ public class DisplayMenuActivity extends AppCompatActivity {
             }
             //else, continue
         }
-
+        Log.d("menuSize2", String.valueOf(menuSize));
+        Log.d("numCategories", String.valueOf(numCategories));
         String cat = listDataHeader.get(0);     //first category
         int whichCat = 0;
         //assuming list is sorted
         for(int i = 0; i < menuSize; i++) {
             //places item by category into the category it belongs in.
-            if(cat != menu.get(i).getCategory()) {
+            if(!cat.equals(menu.get(i).getCategory())) {
                 whichCat++;
                 if(whichCat == numCategories)
                     break;
@@ -310,7 +312,4 @@ public class DisplayMenuActivity extends AppCompatActivity {
         return null;
     }
 
-    public static ArrayList<MenuItem> getShoppingCart() {
-        return shoppingCart;
-    }
 }
