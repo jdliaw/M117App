@@ -54,32 +54,39 @@ public class PickStoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pick_store);
 
         //testing purposes hard coded for now, it's the stores that we'll receive.
-        //String jsonStores = createStoreArray();
+        String jsonStores = createStoreArray();
+//        RequestTask getTask = new RequestTask();
+//        try {
+//            JSONObject httpData = getTask.execute("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441").get(10, TimeUnit.SECONDS);
+//            //final Store[] httpStores = decodeStores(httpData.toString());
+//            Log.d("httpget", httpData.toString());
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//        Log.d("httpget", "past");
 
-        String latitude = getIntent().getStringExtra("latitude");
-        String longitude = getIntent().getStringExtra("longitude");
+//        HTTPTask getTask = new HTTPTask();
+//        try {
+//            JSONObject httpData = getTask.execute("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441").get(30, TimeUnit.SECONDS);
+//            //final Store[] httpStores = decodeStores(httpData.toString());
+//            Log.d("httpget", httpData.toString());
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//        Log.d("httpget", "past");
 
-        String httpStores = "";
-        String lonRequest = "&longitude=" + longitude;
-        String storeRequest = "http://project-order-food.appspot.com/get_stores?latitude=" + latitude + lonRequest;
-        final HTTPTask getStoreTask = new HTTPTask();
-        try {
-            // try the getTask with actual location from gps
-            JSONObject httpData = getStoreTask.execute(storeRequest).get(30, TimeUnit.SECONDS);
-            httpStores = httpData.toString();
-            Log.d("httpget", "worked");
-            Log.d("httpget", httpData.toString());
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        Log.d("httpget", "past");
+
+        //Log.d("jsonStores1", jsonStores1);
 
         //convert json object/array into an array of stores
-        final Store[] stores = decodeStores(httpStores);
+        final Store[] stores = decodeStores(jsonStores);
         //sort stores distance
         Arrays.sort(stores);
+
 
         //create an arraylist of strings to be displayed. trivial but too lazy to change for now.
         ArrayList<String> storesString = getStores(stores);
@@ -158,7 +165,94 @@ public class PickStoreActivity extends AppCompatActivity {
         });
         */
 
+        //displayStores(stores, storeList);
+//        setContentView(R.layout.activity_pick_store);
     }
+
+//    HttpResponse getStores()
+//    {
+//        HttpResponse response = null;
+//        try {
+//            HttpClient client = new DefaultHttpClient();
+//            HttpGet request = new HttpGet();
+//            request.setURI(new URI("https://www.googleapis.com/shopping/search/v1/public/products/?key={my_key}&country=&q=t-shirts&alt=json&rankByrelevancy="));
+//            response = client.execute(request);
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        } catch (ClientProtocolException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        return response;
+//    }
+
+//    public class getData extends AsyncTask<String, String, String>
+//    {
+//        HttpURLConnection urlConnection = null;
+//
+//        @Override
+//        protected String doInBackground(String... args) {
+//            StringBuilder result = new StringBuilder();
+//
+//            try {
+//                URL url = new URL("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441");
+//                urlConnection = (HttpURLConnection) url.openConnection();
+//                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+//
+//                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+//
+//                String line;
+//                while ((line = reader.readLine()) != null) {
+//                    result.append(line);
+//                    Log.d("httpget", line);
+//                }
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                urlConnection.disconnect();
+//            }
+//            return result.toString();
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String result) {
+//
+//            //Do something with the JSON string
+//            Log.d("onpostexecute",result);
+//
+//        }
+//
+//
+////        URL url;
+////        HttpURLConnection urlConnection = null;
+////        try {
+////            url = new URL("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441");
+////
+////            urlConnection = (HttpURLConnection) url
+////                    .openConnection();
+////
+////            InputStream in = urlConnection.getInputStream();
+////
+////            InputStreamReader isw = new InputStreamReader(in);
+////
+////            int data = isw.read();
+////            while (data != -1) {
+////                char current = (char) data;
+////                data = isw.read();
+////                Log.d("httpget", Character.toString(current));
+////            }
+////        } catch (Exception e) {
+////            e.printStackTrace();
+////        } finally {
+////            if (urlConnection != null) {
+////                urlConnection.disconnect();
+////            }
+////        }
+//    }
 
 
 
@@ -215,7 +309,7 @@ public class PickStoreActivity extends AppCompatActivity {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
                 // parse into a Store object
-                int storeId = jsonObject.getInt("storeId");
+                int storeId = jsonObject.getInt("storeID");
                 String storeName = jsonObject.getString("storeName");
                 double distance = jsonObject.getDouble("distance");
 
@@ -235,6 +329,42 @@ public class PickStoreActivity extends AppCompatActivity {
             storeArrayList.add(storeArray[i].getName() + "        " + Double.toString(storeArray[i].getDist()) + "mi");
         }
         return storeArrayList;
+    }
+
+    //currently unused
+    void displayStores(Store[] storeArray, ListView storeList)
+    {
+        // display stores by shortest distance
+        for (int i = 0; i < storeArray.length; i++)
+        {
+            Button b = new Button(this);
+            b.setText(storeArray[i].getName() + "\n Distance: " + Double.toString(storeArray[i].getDist()) + "mi");
+
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArrayList<MenuItem> parcelCart= new ArrayList<MenuItem>();
+                    parcelCart.add(new MenuItem("Breakfast", "Eggs", 5));
+                    parcelCart.get(0).setQuantity(11);
+                    parcelCart.add(new MenuItem("Breakfast", "Bacon", 7));
+                    parcelCart.get(1).setQuantity(33);
+                    parcelCart.add(new MenuItem("Breakfast", "Waffle", 4));
+                    parcelCart.get(2).setQuantity(6);
+                    parcelCart.add(new MenuItem("Lunch", "Panini", 6));
+                    parcelCart.get(3).setQuantity(22);
+                    parcelCart.add(new MenuItem("Lunch", "Sandwich", 3));
+                    parcelCart.get(4).setQuantity(55);
+                    parcelCart.add(new MenuItem("Dinner", "Potato", 1));
+                    parcelCart.get(5).setQuantity(788);
+                    parcelCart.add(new MenuItem("Dinner", "Steak", 2));
+                    parcelCart.get(6).setQuantity(44);
+                    Intent intent = new Intent(PickStoreActivity.this, DisplayMenuActivity.class);
+                    intent.putParcelableArrayListExtra("paramName", parcelCart);
+
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
 }
