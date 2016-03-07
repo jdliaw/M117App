@@ -57,10 +57,10 @@ public class DisplayMenuActivity extends AppCompatActivity {
         }
         else if(getIntent().getExtras() != null) {
             addedItem = getIntent().getExtras().getParcelable("popup");
-            Log.d("test", addedItem.getName() + " YAYYYYYY ");
             Log.d("test", String.valueOf(addedItem.getQuantity()));
-            shoppingCart.add(addedItem);
-            Log.d("shoppingcart size", String.valueOf(shoppingCart.size()));
+            if(addedItem.getQuantity() > 0) {
+                shoppingCart.add(addedItem);
+            }
         }
         else {
             Log.d("non array list", "didnt send");

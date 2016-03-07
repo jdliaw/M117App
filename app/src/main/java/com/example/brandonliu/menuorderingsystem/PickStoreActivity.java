@@ -53,37 +53,31 @@ public class PickStoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_store);
 
-        //testing purposes hard coded for now, it's the stores that we'll receive.
-        String jsonStores = createStoreArray();
-//        RequestTask getTask = new RequestTask();
-//        try {
-//            JSONObject httpData = getTask.execute("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441").get(10, TimeUnit.SECONDS);
-//            //final Store[] httpStores = decodeStores(httpData.toString());
-//            Log.d("httpget", httpData.toString());
-//        }
-//        catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//        Log.d("httpget", "past");
+        //String jsonStores = createStoreArray();
+        String latitude = getIntent().getStringExtra("latitude");
+        String longitude = getIntent().getStringExtra("longitude");
 
-//        HTTPTask getTask = new HTTPTask();
-//        try {
-//            JSONObject httpData = getTask.execute("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441").get(30, TimeUnit.SECONDS);
-//            //final Store[] httpStores = decodeStores(httpData.toString());
-//            Log.d("httpget", httpData.toString());
-//        }
-//        catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//        Log.d("httpget", "past");
-
+        String httpStores = "";
+        String lonRequest = "&longitude=" + longitude;
+        String storeRequest = "http://project-order-food.appspot.com/get_stores?latitude=" + latitude + lonRequest;
+        final HTTPTask getStoreTask = new HTTPTask();
+        try {
+            // try the getTask with actual location from gps
+            JSONObject httpData = getStoreTask.execute(storeRequest).get(30, TimeUnit.SECONDS);
+            httpStores = httpData.toString();
+            Log.d("httpget", "worked");
+            Log.d("httpget", httpData.toString());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        Log.d("httpget", "past");
 
         //Log.d("jsonStores1", jsonStores1);
 
         //convert json object/array into an array of stores
-        final Store[] stores = decodeStores(jsonStores);
+        final Store[] stores = decodeStores(httpStores);
         //sort stores distance
         Arrays.sort(stores);
 
@@ -309,7 +303,7 @@ public class PickStoreActivity extends AppCompatActivity {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
                 // parse into a Store object
-                int storeId = jsonObject.getInt("storeID");
+                int storeId = jsonObject.getInt("storeId");
                 String storeName = jsonObject.getString("storeName");
                 double distance = jsonObject.getDouble("distance");
 
