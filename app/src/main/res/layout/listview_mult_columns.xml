@@ -10,8 +10,6 @@
         android:layout_weight="1.1" />
         <!--android:textStyle="bold"-->
 
-
-
     <TextView
         android:id="@+id/column2"
         android:layout_height="wrap_content"

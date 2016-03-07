@@ -13,14 +13,7 @@
         android:id="@+id/storelist"
         android:background="@drawable/listview_format"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        >
     </ListView>
-    <TextView
-        android:id="@+id/TextView"
-        android:typeface="monospace"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true" />
-
-
 </RelativeLayout>
