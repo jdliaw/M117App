@@ -37,7 +37,7 @@ public class HTTPTask extends AsyncTask<String, String, JSONObject>
             url = new URL(args[0]);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
-            urlConnection.setDoOutput(true);
+            //urlConnection.setDoOutput(true);
             urlConnection.setDoInput(true);
             urlConnection.connect();
             inStream = urlConnection.getInputStream();
