@@ -70,8 +70,23 @@ public class PickStoreActivity extends AppCompatActivity {
         }
         Log.d("httpget", "past");
 
+        final HTTPTask getMenuTask = new HTTPTask(); // need to make a new httptask for each request
+        try {
+            // try the getTask with actual location from gps
+            JSONObject httpMenuData = getMenuTask.execute("http://project-order-food.appspot.com/get_menu?storeId=1").get(30, TimeUnit.SECONDS);
+            //httpStores = httpData.toString();
+            Log.d("httpget", "menuget worked");
+            Log.d("httpget", httpMenuData.toString());
+        }
+        catch (Exception e)
+        {
+            Log.d("httpget", "menuget failed");
+            e.printStackTrace();
+        }
+        Log.d("httpget", "past menuget");
+
         //convert json object/array into an array of stores
-        final Store[] stores = decodeStores(jsonStores);
+        final Store[] stores = decodeStores(httpStores);
         //sort stores distance
         Arrays.sort(stores);
 
@@ -139,7 +154,7 @@ public class PickStoreActivity extends AppCompatActivity {
         });
         */
 
-        //displayStores(stores, storeList);
+        //displayStores(stores, listView);
 //        setContentView(R.layout.activity_pick_store);
     }
 
@@ -198,7 +213,7 @@ public class PickStoreActivity extends AppCompatActivity {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
                 // parse into a Store object
-                int storeId = jsonObject.getInt("storeID");
+                int storeId = jsonObject.getInt("storeId");
                 String storeName = jsonObject.getString("storeName");
                 double distance = jsonObject.getDouble("distance");
 
