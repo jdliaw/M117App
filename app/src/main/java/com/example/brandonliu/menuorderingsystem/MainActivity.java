@@ -40,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
         b.setText("Searching for your location...");
 
         /* getLoc(); is commented out because we dont have GPS location on emulator, so it crashes */
-        //getLoc();
+        final StringBuilder latStr = new StringBuilder();
+        final StringBuilder lonStr = new StringBuilder();
+        getLoc(latStr, lonStr);
 
         ll.addView(b);
 
@@ -51,12 +53,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 /* send location and receive a list of stores. then send that list over */
-                startActivity(new Intent(MainActivity.this, PickStoreActivity.class));
+                Intent intent = new Intent(MainActivity.this, PickStoreActivity.class);
+                intent.putExtra("latitude", latStr.toString());
+                intent.putExtra("longitude", lonStr.toString());
+                startActivity(intent);
             }
         });
     }
 
-    public void getLoc()
+    public void getLoc(final StringBuilder latStr, final StringBuilder lonStr)
     {
         MyLocation.LocationResult locationResult = new MyLocation.LocationResult(){
             @Override
@@ -65,14 +70,13 @@ public class MainActivity extends AppCompatActivity {
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
 
-                String latStr = String.valueOf(latitude);
-                String lonStr = String.valueOf(longitude);
+                latStr.append(String.valueOf(latitude));
+                lonStr.append(String.valueOf(longitude));
                 b.setText("Find a store near your location: (" + latStr + ", " + lonStr + ")");
             }
         };
         MyLocation myLocation = new MyLocation();
         myLocation.getLocation(this, locationResult);
-
 
     }
 

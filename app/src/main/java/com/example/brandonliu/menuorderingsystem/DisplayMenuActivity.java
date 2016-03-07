@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
@@ -65,6 +67,26 @@ public class DisplayMenuActivity extends AppCompatActivity {
         else {
             Log.d("non array list", "didnt send");
         }
+
+        // GET request to get menu for certain storeId
+        String httpMenu = "";
+        final HTTPTask getMenuTask = new HTTPTask(); // need to make a new httptask for each request
+        try {
+            // try the getTask with actual location from gps
+            JSONObject httpMenuData = getMenuTask.execute("http://project-order-food.appspot.com/get_menu?storeId=1").get(30, TimeUnit.SECONDS);
+            httpMenu = httpMenuData.toString();
+            Log.d("httpget", "menuget worked");
+            Log.d("httpget", httpMenuData.toString());
+        }
+        catch (Exception e)
+        {
+            Log.d("httpget", "menuget failed");
+            e.printStackTrace();
+        }
+        Log.d("httpget", "past menuget");
+
+        ArrayList<MenuItem> MenuArray = decodeMenu(httpMenu);
+        prepareListData(MenuArray);
 
         //generating hard coded test data that can easily be gotten by
         parcelCart.add(new MenuItem("Breakfast", "Eggs", 5));

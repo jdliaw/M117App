@@ -53,13 +53,18 @@ public class PickStoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pick_store);
 
         //testing purposes hard coded for now, it's the stores that we'll receive.
-        String jsonStores = createStoreArray();
+        //String jsonStores = createStoreArray();
+
+        String latitude = getIntent().getStringExtra("latitude");
+        String longitude = getIntent().getStringExtra("longitude");
 
         String httpStores = "";
-        final HTTPTask getTask = new HTTPTask();
+        String lonRequest = "&longitude=" + longitude;
+        String storeRequest = "http://project-order-food.appspot.com/get_stores?latitude=" + latitude + lonRequest;
+        final HTTPTask getStoreTask = new HTTPTask();
         try {
             // try the getTask with actual location from gps
-            JSONObject httpData = getTask.execute("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441").get(30, TimeUnit.SECONDS);
+            JSONObject httpData = getStoreTask.execute(storeRequest).get(30, TimeUnit.SECONDS);
             httpStores = httpData.toString();
             Log.d("httpget", "worked");
             Log.d("httpget", httpData.toString());
@@ -70,26 +75,10 @@ public class PickStoreActivity extends AppCompatActivity {
         }
         Log.d("httpget", "past");
 
-        final HTTPTask getMenuTask = new HTTPTask(); // need to make a new httptask for each request
-        try {
-            // try the getTask with actual location from gps
-            JSONObject httpMenuData = getMenuTask.execute("http://project-order-food.appspot.com/get_menu?storeId=1").get(30, TimeUnit.SECONDS);
-            //httpStores = httpData.toString();
-            Log.d("httpget", "menuget worked");
-            Log.d("httpget", httpMenuData.toString());
-        }
-        catch (Exception e)
-        {
-            Log.d("httpget", "menuget failed");
-            e.printStackTrace();
-        }
-        Log.d("httpget", "past menuget");
-
         //convert json object/array into an array of stores
         final Store[] stores = decodeStores(httpStores);
         //sort stores distance
         Arrays.sort(stores);
-
 
         //create an arraylist of strings to be displayed. trivial but too lazy to change for now.
         ArrayList<String> storesString = getStores(stores);
@@ -154,8 +143,6 @@ public class PickStoreActivity extends AppCompatActivity {
         });
         */
 
-        //displayStores(stores, listView);
-//        setContentView(R.layout.activity_pick_store);
     }
 
 
@@ -233,42 +220,6 @@ public class PickStoreActivity extends AppCompatActivity {
             storeArrayList.add(storeArray[i].getName() + "        " + Double.toString(storeArray[i].getDist()) + "mi");
         }
         return storeArrayList;
-    }
-
-    //currently unused
-    void displayStores(Store[] storeArray, ListView storeList)
-    {
-        // display stores by shortest distance
-        for (int i = 0; i < storeArray.length; i++)
-        {
-            Button b = new Button(this);
-            b.setText(storeArray[i].getName() + "\n Distance: " + Double.toString(storeArray[i].getDist()) + "mi");
-
-            b.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ArrayList<MenuItem> parcelCart= new ArrayList<MenuItem>();
-                    parcelCart.add(new MenuItem("Breakfast", "Eggs", 5));
-                    parcelCart.get(0).setQuantity(11);
-                    parcelCart.add(new MenuItem("Breakfast", "Bacon", 7));
-                    parcelCart.get(1).setQuantity(33);
-                    parcelCart.add(new MenuItem("Breakfast", "Waffle", 4));
-                    parcelCart.get(2).setQuantity(6);
-                    parcelCart.add(new MenuItem("Lunch", "Panini", 6));
-                    parcelCart.get(3).setQuantity(22);
-                    parcelCart.add(new MenuItem("Lunch", "Sandwich", 3));
-                    parcelCart.get(4).setQuantity(55);
-                    parcelCart.add(new MenuItem("Dinner", "Potato", 1));
-                    parcelCart.get(5).setQuantity(788);
-                    parcelCart.add(new MenuItem("Dinner", "Steak", 2));
-                    parcelCart.get(6).setQuantity(44);
-                    Intent intent = new Intent(PickStoreActivity.this, DisplayMenuActivity.class);
-                    intent.putParcelableArrayListExtra("paramName", parcelCart);
-
-                    startActivity(intent);
-                }
-            });
-        }
     }
 
 }
