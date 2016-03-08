@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
         final StringBuilder latStr = new StringBuilder();
         final StringBuilder lonStr = new StringBuilder();
         getLoc(latStr, lonStr);
-
+//        latStr.append("30");
+//        lonStr.append("-118");
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override

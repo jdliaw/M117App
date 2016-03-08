@@ -104,22 +104,6 @@ public class ShoppingCartActivity extends AppCompatActivity {
                 Log.d("Button", "clicked");
             }
         });
-
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-////                String selectedFromList = String.valueOf((TextView) findViewById(R.id.column1));
-////                Log.d("col1", selectedFromList);
-//                //gets which we click. position-1 b/c header is position 0.
-//               // Log.d("stores:", parcelCart.get(position-1).getName());
-//                //offset by 2 because we have an actual header, a list header, and a footer.
-//                if(position == parcelCart.size()+2) {
-//                    Log.d("order", "your order");
-//                    /* send menu to them */
-//                    //sendOrder(parcelCart);
-//                }
-//            }
-//        });
     }
 
     public static double getSubtotal(ArrayList<MenuItem> allItems) {
@@ -143,10 +127,6 @@ public class ShoppingCartActivity extends AppCompatActivity {
             String name = allItems.get(i).getName();
             String pr = dec.format(price);
             String temp = String.format("%s\t%s\t%s", quan, name, pr);
-           /* String temp = allItems.get(i).getQuantity() + "         " +
-                    allItems.get(i).getName() + "          $" +
-                    dec.format(price);*/
-            //Log.d("print tempCart", temp);
             tempCart.add(temp);
         }
         return tempCart;

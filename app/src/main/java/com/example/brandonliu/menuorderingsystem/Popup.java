@@ -69,6 +69,7 @@ public class Popup extends Activity {
                 else {
                     menuItem.setQuantity(Integer.valueOf(test));
                 }
+                Log.d("Quantity", menuItem.getName() + " " + String.valueOf(menuItem.getQuantity()));
                 //send store
                 intent.putExtra("popup", menuItem);
                 intent.putExtra("selectedStore", storeId);

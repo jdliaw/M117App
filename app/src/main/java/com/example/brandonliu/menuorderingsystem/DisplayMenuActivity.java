@@ -51,13 +51,6 @@ public class DisplayMenuActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_display_menu);
 
-        //parcelCart = intent.getParcelableArrayList("paramName");
-
-//        if(getIntent().getParcelableArrayListExtra("paramName") != null) {
-//            parcelCart = getIntent().getParcelableArrayListExtra("paramName");
-//            Log.d("test", "sent!");
-//            Log.d("test", parcelCart.get(0).getName());
-//        }
         //grab storeId
         if(getIntent().getStringExtra("selectedStore") != null) {
             storeId = getIntent().getStringExtra("selectedStore");
@@ -70,13 +63,18 @@ public class DisplayMenuActivity extends AppCompatActivity {
         //grab added item from menu if applicable
         if(getIntent().getExtras().getParcelable("popup") != null) {
             addedItem = getIntent().getExtras().getParcelable("popup");
+            Log.d("Quantity in displayMenu", String.valueOf(addedItem.getQuantity()));
             //only add if there's quantity greater than 0.
             if(addedItem.getQuantity() > 0) {
-                shoppingCart.add(addedItem);
+                if(!itemExists(addedItem, shoppingCart)) {
+                    shoppingCart.add(addedItem);
+                }
+                for(int i = 0; i < shoppingCart.size(); i++) {
+                    if(shoppingCart.get(i).getName().equals(addedItem.getName()))
+                        shoppingCart.get(i).setQuantity(addedItem.getQuantity());
+                }
             }
-        }
-        else {
-            Log.d("popup", "really didnt send");
+
         }
 
         //http get request
@@ -87,33 +85,22 @@ public class DisplayMenuActivity extends AppCompatActivity {
             // try the getTask with actual location from gps
             JSONObject httpMenuData = getMenuTask.execute(menuRequest).get(30, TimeUnit.SECONDS);
             httpMenu = httpMenuData.toString();
-            Log.d("httpget", "menuget worked");
             Log.d("httpget", httpMenu);
         }
         catch (Exception e)
         {
-            Log.d("httpget", "menuget failed");
             e.printStackTrace();
         }
-        Log.d("httpget", "past menuget");
 
         //decode menu now working.
         parcelCart = decodeMenu(httpMenu);
+
+        //if not zero, we can go ahead and populate explistview
         if(parcelCart.size() != 0) {
             expListView = (ExpandableListView) findViewById(R.id.expandablelistView);
             prepareListData(parcelCart);
             listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
             expListView.setAdapter(listAdapter);
-
-                    /*
-        * Currently this function, on clicking child of the expandable list view, sends us to
-        * a new activity (ShoppingCartActivity). What we want in the future is to check the child's
-        * position and use this position in accordance with the ArrayList of all items to
-        * find which item is clicked (note: headers do count as position I believe). Then we can
-        * pass this info into a fragment, select quantity and add to cart.
-        * Only when we press the very last button or whichever button is the "Checkout" button
-        * do we start a new activity and send our shopping cart array (through parcelable functions)
-        * */
 
             expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
@@ -325,6 +312,15 @@ public class DisplayMenuActivity extends AppCompatActivity {
             return itemArray;
         } catch (JSONException e) {e.printStackTrace();}
         return null;
+    }
+
+    boolean itemExists(MenuItem item, ArrayList<MenuItem> cart) {
+        for(int i = 0; i < cart.size(); i++) {
+            if (cart.get(i).getName().equals(item.getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
