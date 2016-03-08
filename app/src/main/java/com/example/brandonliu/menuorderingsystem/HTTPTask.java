@@ -65,39 +65,4 @@ public class HTTPTask extends AsyncTask<String, String, JSONObject>
         }
         return object;
     }
-
-//    HttpURLConnection urlConnection = null;
-//
-//    @Override
-//    protected String doInBackground(String... args) {
-//        StringBuilder result = new StringBuilder();
-//
-//        try {
-//            URL url = new URL("http://project-order-food.appspot.com/get_stores?latitude=34.0722&longitude=-118.4441");
-//            urlConnection = (HttpURLConnection) url.openConnection();
-//            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-//
-//            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-//
-//            String line;
-//            while ((line = reader.readLine()) != null) {
-//                result.append(line);
-//                Log.d("httpget", line);
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            urlConnection.disconnect();
-//        }
-//        return result.toString();
-//    }
-//
-//    @Override
-//    protected void onPostExecute(String result) {
-//
-//        //Do something with the JSON string
-//        Log.d("onpostexecute", result);
-//
-//    }
 }

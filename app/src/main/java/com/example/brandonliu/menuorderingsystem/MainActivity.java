@@ -43,8 +43,9 @@ public class MainActivity extends AppCompatActivity {
         final StringBuilder latStr = new StringBuilder();
         final StringBuilder lonStr = new StringBuilder();
         getLoc(latStr, lonStr);
-//        latStr.append("30");
-//        lonStr.append("-118");
+        //latStr.append("34.0722");
+        //lonStr.append("-118.4441");
+        // latitude=34.0722&longitude=-118.4441
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override

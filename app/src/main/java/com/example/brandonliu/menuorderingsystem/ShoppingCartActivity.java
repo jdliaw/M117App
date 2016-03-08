@@ -9,11 +9,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -101,7 +103,23 @@ public class ShoppingCartActivity extends AppCompatActivity {
 //                intent.putParcelableArrayListExtra("paramName", parcelCart);
 //                startActivity(intent);
 
+                String order = sendOrder(parcelCart);
+
+                String orderPost = "http://project-order-food.appspot.com/send_order";
+                final PostTask sendOrderTask = new PostTask(); // need to make a new httptask for each request
+                try {
+                    // try the getTask with actual location from gps
+                    sendOrderTask.execute(orderPost, order).get(30, TimeUnit.SECONDS);
+                    Log.d("httppost", order);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
                 Log.d("Button", "clicked");
+                Toast toast = Toast.makeText(getApplication().getBaseContext(), "Order Placed!", Toast.LENGTH_LONG);
+                toast.show();
             }
         });
     }
