@@ -9,8 +9,9 @@ import android.util.Log;
  */
 //IMPLEMENTS BOTH INTERFACES
 public class MenuItem implements Comparable<MenuItem>, Parcelable {
-    public MenuItem(String category, String name, double price)
+    public MenuItem(int id, String category, String name, double price)
     {
+        m_id = id;
         m_cat = category;
         m_name = name;
         m_price = price;
@@ -26,6 +27,7 @@ public class MenuItem implements Comparable<MenuItem>, Parcelable {
     public String getName() { return m_name; }
     public double getPrice() { return m_price; }
     public int getQuantity() { return m_quantity; }
+    public int getId() { return m_id; }
     //set methods
     public void setCategory(String cat) { m_cat = cat; }
     public void setQuantity(int quan) {
@@ -37,9 +39,11 @@ public class MenuItem implements Comparable<MenuItem>, Parcelable {
     private String m_name;
     private double m_price;
     private int m_quantity;
+    private int m_id;
 
     //initializer in a sense
     protected MenuItem(Parcel in) {
+        m_id = in.readInt();
         m_cat = in.readString();
         m_name = in.readString();
         m_price = in.readDouble();

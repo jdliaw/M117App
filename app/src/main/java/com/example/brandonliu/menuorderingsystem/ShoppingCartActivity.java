@@ -161,7 +161,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
             int orderSize = orders.size();
             for (int i = 0; i < orderSize; i++) {
                 //add order details
-                orderDetails.put("itemId", orders.get(i).getName());
+                orderDetails.put("itemId", orders.get(i).getId());
                 orderDetails.put("quantity", orders.get(i).getQuantity());
                 //put order details into this array
                 array.put(orderDetails);

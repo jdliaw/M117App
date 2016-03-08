@@ -303,11 +303,12 @@ public class DisplayMenuActivity extends AppCompatActivity {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
                 // parse into a Store object
+                int id = jsonObject.getInt("itemId");
                 String category = jsonObject.getString("category");
                 String name = jsonObject.getString("name");
                 double price = jsonObject.getDouble("price");
                 //add to array.
-                itemArray.add(new MenuItem(category, name, price));
+                itemArray.add(new MenuItem(id, category, name, price));
             }
             return itemArray;
         } catch (JSONException e) {e.printStackTrace();}
