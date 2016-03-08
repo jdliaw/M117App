@@ -139,6 +139,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(DisplayMenuActivity.this, ShoppingCartActivity.class);
                 intent.putParcelableArrayListExtra("paramName", shoppingCart);
+                intent.putExtra("storeId", storeId);
                 startActivity(intent);
             }
         });

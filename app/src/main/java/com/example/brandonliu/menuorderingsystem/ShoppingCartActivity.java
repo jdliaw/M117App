@@ -14,7 +14,9 @@ import android.view.View;
 
 import java.util.ArrayList;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.concurrent.TimeUnit;
 
 import org.json.JSONObject;
@@ -29,6 +31,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
     private double tax;
     private final static double taxRate = .08; //will be gotten based off location
     private static DecimalFormat dec = new DecimalFormat("#.00");
+    private static int storeId;
     /*
     Double number = Double.valueOf(text);
 
@@ -42,6 +45,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
         //get Array List of menu items
         final ArrayList<MenuItem> parcelCart = getIntent().getParcelableArrayListExtra("paramName");
+        storeId = Integer.valueOf(getIntent().getStringExtra("storeId"));
 
         //convert arrayList<MenuItem> into arrayList<String>
         ArrayList<String> shoppingCart = getCart(parcelCart);
@@ -118,6 +122,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
                 }
 
                 Log.d("Button", "clicked");
+                Log.d("sendorder", sendOrder(parcelCart));
                 Toast toast = Toast.makeText(getApplication().getBaseContext(), "Order Placed!", Toast.LENGTH_LONG);
                 toast.show();
             }
@@ -154,7 +159,8 @@ public class ShoppingCartActivity extends AppCompatActivity {
     public static String sendOrder(ArrayList<MenuItem> orders) {
         try {
             JSONObject obj = new JSONObject();
-            obj.put("name", new String("John"));            //name on the order
+            obj.put("name", new String("Person1"));
+            obj.put("storeId", storeId);
             JSONArray array = new JSONArray();              //array of items ordered
             JSONObject orderDetails = new JSONObject();     //for each item ordered
 
@@ -168,6 +174,18 @@ public class ShoppingCartActivity extends AppCompatActivity {
                 orderDetails = new JSONObject();    //reset the orderDetail for a new item.
             }
             obj.put("order", array);
+//            obj.put("name", new String("John"));            //name on the order
+//            obj.put("storeId", storeId);
+
+//            LinkedHashMap<String, String> jsonOrderedMap = new LinkedHashMap<String, String>();
+//
+//            jsonOrderedMap.put("name",new String("John"));
+//            jsonOrderedMap.put("storeId", storeId);
+//            jsonOrderedMap.put("order", array);
+//
+//            JSONObject orderedJson = new JSONObject(jsonOrderedMap);
+//
+//            JSONArray jsonArray = new JSONArray(Arrays.asList(orderedJson));
 
             return obj.toString();
         } catch (JSONException e) {

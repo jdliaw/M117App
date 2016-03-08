@@ -59,6 +59,7 @@ public class MenuItem implements Comparable<MenuItem>, Parcelable {
     //what we want to send
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(m_id);
         dest.writeString(m_cat);
         dest.writeString(m_name);
         dest.writeDouble(m_price);
